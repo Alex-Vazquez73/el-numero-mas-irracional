@@ -1,0 +1,1820 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>El número más irracional — Fibonacci y la proporción áurea, sin mitos</title>
+<meta name="description" content="Un recorrido visual por la sucesión de Fibonacci y el número áureo: de dónde sale φ, dónde aparece de verdad, dónde lo inventamos y cómo lo usan los traders.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:title" content="El número más irracional — Fibonacci y la proporción áurea, sin mitos">
+<meta property="og:description" content="Un recorrido visual por Fibonacci y el número áureo: la regla, la espiral, la naturaleza, los mitos y los mercados.">
+<meta name="theme-color" content="#06070E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306070E'/%3E%3Cpath d='M16 16a2 2 0 0 1 2 2 3.2 3.2 0 0 1-3.2 3.2A5.2 5.2 0 0 1 9.6 16 8.4 8.4 0 0 1 18 7.6 13.6 13.6 0 0 1 31.6 21.2' fill='none' stroke='%23E7C46B' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#06070E; --bg-2:#0B0D18;
+  --ink:#EDE7D9; --ink-2:rgba(237,231,217,.76); --ink-3:rgba(237,231,217,.58); --ink-4:rgba(237,231,217,.36);
+  --gold:#E7C46B; --gold-2:rgba(231,196,107,.62); --gold-3:rgba(231,196,107,.22); --gold-4:rgba(231,196,107,.09);
+  --blue:#93B8E0;
+  --line:rgba(237,231,217,.13); --line-hi:rgba(231,196,107,.42);
+  --card:rgba(13,15,28,.74);
+  --serif:"Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Consolas,"Cascadia Mono",Menlo,monospace;
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+a{color:var(--gold)}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* ---------- portada ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden}
+#cvHero{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 70% at 50% 110%,rgba(6,7,14,.96) 30%,rgba(6,7,14,0) 75%),linear-gradient(180deg,rgba(6,7,14,.55),rgba(6,7,14,0) 30%)}
+.hero-txt{position:absolute;left:0;right:0;bottom:calc(9vh + var(--sab));z-index:2;text-align:center;padding:0 22px}
+.kicker{font:500 12px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2);margin:0 0 14px}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,6.2vw,62px);line-height:1.08;letter-spacing:.14em;text-transform:uppercase;margin:0;text-shadow:0 2px 30px rgba(6,7,14,.9)}
+.hero .sub{font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,22px);color:var(--ink-2);margin:12px 0 0}
+.phi-line{font:500 13px var(--mono);color:var(--gold-2);margin:18px 0 26px;letter-spacing:.06em}
+.enter{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 24px;border-radius:999px;border:1px solid var(--line-hi);background:rgba(231,196,107,.1);color:var(--gold);font:600 13px var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s}
+.enter:hover{background:rgba(231,196,107,.18);transform:translateY(-1px)}
+
+/* ---------- índice ---------- */
+.indice{max-width:1120px;margin:0 auto;padding:72px 20px 40px}
+.sec-head{text-align:center;margin:0 auto 34px;max-width:640px}
+.sec-head h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.6vw,34px);letter-spacing:.1em;text-transform:uppercase;margin:0 0 10px}
+.sec-head p{color:var(--ink-2);margin:0;font-size:16px}
+.sec-head .sig{color:var(--gold);font-family:var(--serif);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.tile{position:relative;display:flex;gap:16px;align-items:flex-start;text-align:left;width:100%;padding:20px 20px 20px 18px;border:1px solid var(--line);border-radius:18px;background:var(--card);cursor:pointer;transition:border-color .2s,transform .2s,background .2s}
+.tile:hover{border-color:var(--line-hi);transform:translateY(-2px);background:rgba(18,20,36,.86)}
+.tile .ico{flex:none;width:52px;height:52px;border-radius:14px;border:1px solid var(--gold-3);background:var(--gold-4);display:grid;place-items:center;color:var(--gold);font-family:var(--serif);font-size:24px}
+.tile .ico svg{width:32px;height:32px}
+.tile .num{font:500 11px var(--mono);letter-spacing:.18em;color:var(--gold-2)}
+.tile h3{font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.25;margin:2px 0 6px}
+.tile p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5}
+.tile.extra{border-style:dashed}
+.tile.extra::after{content:"opcional";position:absolute;top:14px;right:14px;font:500 10px var(--mono);letter-spacing:.08em;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink-4)}
+.foot{max-width:1120px;margin:0 auto;padding:30px 20px calc(40px + var(--sab));color:var(--ink-3);font-size:13.5px;text-align:center;border-top:1px solid var(--line)}
+.foot a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--gold-3)}
+.foot p{margin:4px 0}
+
+/* ---------- vistas de sección ---------- */
+.view{min-height:100vh}
+.vbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:calc(10px + var(--sat)) 16px 10px;background:rgba(6,7,14,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.vbar .t{flex:1;min-width:0;font-family:var(--serif);font-size:16px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-2)}
+.vbar .t b{color:var(--gold);font-weight:600;margin-right:8px}
+.pill{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:rgba(13,15,28,.6);color:var(--ink);font:500 13px var(--sans);cursor:pointer;white-space:nowrap;text-decoration:none;transition:border-color .2s,color .2s}
+.pill:hover{border-color:var(--line-hi);color:var(--gold)}
+.pill.math{border-color:var(--gold-3);color:var(--gold)}
+.pill.math .sig{font-family:var(--serif);font-size:17px;line-height:1}
+.next{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:24px;margin-top:10px}
+.next .pill{min-width:0;max-width:48%;overflow:hidden;text-overflow:ellipsis;display:inline-block;line-height:38px}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 20px 60px}
+.v-intro{max-width:740px;margin:6px 0 30px}
+.v-intro .num{font:500 12px var(--mono);letter-spacing:.2em;color:var(--gold-2)}
+.v-intro h2{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.4vw,44px);line-height:1.12;margin:6px 0 12px}
+.v-intro p{font-size:18px;color:var(--ink-2);margin:0;font-family:var(--serif)}
+.block{display:grid;grid-template-columns:1fr;gap:22px;margin:0 0 56px}
+@media (min-width:980px){
+  .block{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:44px;align-items:start}
+  .block .viz{position:sticky;top:80px;order:2}
+  .block .txt{order:1;padding-top:6px}
+}
+.block-head{max-width:760px;margin:0 0 20px}
+.block-head h3{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3vw,30px);line-height:1.2;margin:0 0 10px}
+.block-head p{margin:0;color:var(--ink-2);font-size:17px}
+.block-head p strong{color:var(--ink);font-weight:600}
+.steps{margin:0 0 16px;padding-left:22px;color:var(--ink-2);font-size:16px}
+.steps li{margin-bottom:8px;padding-left:4px}
+.steps li::marker{color:var(--gold);font-family:var(--mono);font-size:14px}
+.steps strong{color:var(--ink)}
+.txt h3{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.25;margin:0 0 10px}
+.txt p{margin:0 0 14px;color:var(--ink-2);font-size:16.5px}
+.txt p strong{color:var(--ink);font-weight:600}
+.txt .lead{font-family:var(--serif);font-size:19px;color:var(--ink)}
+.note{border-left:2px solid var(--gold-3);padding:4px 0 4px 14px;margin:18px 0;color:var(--ink-3);font-size:15px}
+.viz{border:1px solid var(--line);border-radius:20px;background:var(--card);padding:18px;min-width:0}
+.viz + .viz{margin-top:16px}
+.viz-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:12px}
+.viz-title{font-family:var(--serif);font-size:18px;font-weight:600;margin:0}
+.viz-sub{font-size:13px;color:var(--ink-3);margin:2px 0 0}
+.seg{display:inline-flex;flex-wrap:wrap;padding:3px;border:1px solid var(--line);border-radius:999px;background:rgba(6,7,14,.5)}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font:500 12.5px var(--sans);color:var(--ink-3);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--gold-3);color:var(--gold)}
+.chart{position:relative}
+.chart canvas{display:block;width:100%;touch-action:none;border-radius:10px;cursor:crosshair}
+.chart canvas.pan{touch-action:pan-y}
+.tip{position:absolute;z-index:3;pointer-events:none;min-width:140px;padding:8px 11px;border-radius:10px;border:1px solid var(--line-hi);background:rgba(8,9,18,.95);font-size:12.5px;line-height:1.45;color:var(--ink-2);opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;white-space:nowrap}
+.tip.on{opacity:1;transform:none}
+.tip b{display:block;color:var(--ink);font:600 15px var(--mono)}
+.readout{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0 0 10px}
+.readout .big{font:600 clamp(22px,3.2vw,30px) var(--mono);color:var(--gold);letter-spacing:-.01em}
+.readout .lbl{font-size:13px;color:var(--ink-3)}
+.ctrls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 15px;border-radius:999px;border:1px solid var(--gold-3);background:var(--gold-4);color:var(--gold);font:600 13px var(--sans);cursor:pointer}
+.btn:hover{background:var(--gold-3)}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--ink-2)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink-2);margin-top:10px}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+.legend i.dot{width:10px;height:10px;border:0;border-radius:50%;margin-right:6px}
+details.tbl{margin-top:12px;font-size:13px;color:var(--ink-3)}
+details.tbl summary{cursor:pointer}
+details.tbl table{margin-top:8px;border-collapse:collapse;font:12.5px var(--mono);color:var(--ink-2)}
+details.tbl td,details.tbl th{padding:3px 12px 3px 0;text-align:right;border-bottom:1px solid var(--line)}
+details.tbl th{color:var(--ink-3);font-weight:500}
+.src{font-size:12px;color:var(--ink-4);margin:8px 0 0}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,var(--gold-2),var(--line))}
+input[type=range]::-moz-range-track{height:3px;border-radius:3px;background:var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9.5px;border-radius:50%;background:var(--gold);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--gold-2)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);border:3px solid var(--bg)}
+.rng{display:flex;align-items:center;gap:12px}
+.rng label{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.rng output{font:600 15px var(--mono);color:var(--gold);min-width:3.2em;text-align:right}
+.bar{display:flex;height:46px;border-radius:10px;overflow:hidden;border:1px solid var(--line);margin:4px 0 6px}
+.bar>div{display:flex;align-items:center;justify-content:center;font:600 18px var(--serif);transition:background .2s}
+.bar .a{background:rgba(231,196,107,.28);color:var(--ink)}
+.bar .b{background:rgba(147,184,224,.16);color:var(--ink-2)}
+.gold-flag{display:inline-flex;align-items:center;gap:6px;font:600 13px var(--sans);color:var(--gold);opacity:0;transition:opacity .25s}
+.gold-flag.on{opacity:1}
+.levels{width:100%;border-collapse:collapse;font-size:14.5px;margin:6px 0 16px}
+.levels td{padding:7px 8px 7px 0;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:top}
+.levels td:first-child{font:600 14px var(--mono);color:var(--gold);white-space:nowrap;width:1%}
+.levels td:nth-child(2){font-family:var(--mono);font-size:13px;color:var(--ink);white-space:nowrap;width:1%}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat .v{font:600 20px var(--mono);color:var(--ink)}
+.stat .k{font-size:12px;color:var(--ink-3)}
+.stat.hi{border-color:var(--gold-3)}
+.stat.hi .v{color:var(--gold)}
+.disclaimer{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+/* piezas de las secciones */
+.chips-row{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-width:44px;padding:6px 8px;border-radius:11px;border:1px solid var(--gold-3);background:rgba(255,255,255,.02);text-align:center;font-family:var(--serif);transition:transform .25s,background .25s}
+.chip small{display:block;font:500 10px var(--mono);color:var(--ink-4)}
+.chip b{font-size:18px;font-weight:600}
+.chip.sum{border-color:var(--gold-2);background:var(--gold-4);color:var(--gold)}
+.chip.new{background:var(--gold);color:#0a0b12;border-color:var(--gold);transform:translateY(-3px)}
+.chip.new small{color:rgba(10,11,18,.6)}
+.eqline{font:600 clamp(22px,3vw,30px) var(--mono);color:var(--gold);margin:16px 0 4px;min-height:1.3em}
+.comps{display:flex;flex-direction:column;gap:5px;max-height:300px;overflow:auto;padding:4px 4px 4px 0;margin-top:10px}
+.comp{display:flex;gap:4px;align-items:center}
+.comp i{height:16px;border-radius:4px;flex:none}
+.comp .s1{width:22px;background:rgba(237,231,217,.5)}
+.comp .s2{width:48px;background:var(--gold)}
+.strip{display:flex;gap:4px;flex-wrap:wrap;margin:12px 0 0;font:12px var(--mono);color:var(--ink-3)}
+.strip span{padding:3px 7px;border-radius:7px;border:1px solid var(--line);text-align:center}
+.strip span small{display:block;font-size:10px;color:var(--ink-4)}
+.strip span.on{border-color:var(--gold-2);color:var(--gold)}
+.opts{display:grid;gap:8px;margin:12px 0}
+.opt{text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;color:var(--ink);font-size:15px}
+.opt:hover{border-color:var(--line-hi)}
+.opt[aria-pressed=true]{border-color:var(--gold-2);background:var(--gold-4);color:var(--gold)}
+.verdict{border:1px solid var(--gold-3);border-radius:14px;padding:14px 16px;background:linear-gradient(180deg,rgba(231,196,107,.08),rgba(231,196,107,.02));margin-top:12px}
+.verdict b{display:block;font-family:var(--serif);font-size:20px;color:var(--gold);margin-bottom:4px}
+.verdict p{margin:0;color:var(--ink-2);font-size:15px}
+.field{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.field label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3)}
+.num-in{width:104px;background:rgba(6,7,14,.6);border:1px solid var(--gold-3);border-radius:10px;padding:8px 10px;color:var(--gold);font:600 17px var(--mono);text-align:center}
+.num-in.sm{width:72px}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.presets button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 11px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.presets button[aria-pressed=true]{border-color:var(--gold-2);color:var(--gold);background:var(--gold-4)}
+.myths{display:grid;gap:10px;margin:8px 0 14px}
+.myth{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.02)}
+.myth h4{margin:2px 0 4px;font-family:var(--serif);font-size:17px}
+.myth p{margin:0;font-size:14.5px;color:var(--ink-2)}
+.myth .tag{font:600 10.5px var(--mono);letter-spacing:.1em;color:var(--gold-2);text-transform:uppercase}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:10px 0 16px}
+.fact{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.fact b{display:block;font:600 18px var(--mono);color:var(--gold)}
+.fact span{font-size:13.5px;color:var(--ink-2)}
+.gcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:40px}
+.gcard{border:1px solid var(--line);border-radius:18px;background:var(--card);padding:18px;min-width:0}
+.gcard .k{font:500 10.5px var(--mono);letter-spacing:.16em;color:var(--gold-2);text-transform:uppercase}
+.gcard h3{font-family:var(--serif);font-size:20px;margin:2px 0 4px}
+.gcard p{margin:0 0 12px;color:var(--ink-2);font-size:14.5px}
+.gout{font:600 15px var(--mono);color:var(--gold);margin-top:12px;overflow-wrap:anywhere;line-height:1.55}
+.gout small{display:block;font:400 12.5px var(--sans);color:var(--ink-3);margin-top:2px}
+.cols89{font:13px var(--mono);color:var(--ink-2);line-height:1.5;white-space:pre;overflow-x:auto;margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(6,7,14,.5)}
+.zbits{display:flex;flex-wrap:wrap;gap:3px;margin-top:10px}
+.zbits span{min-width:30px;padding:3px 4px;border-radius:6px;border:1px solid var(--line);font:11px var(--mono);text-align:center;color:var(--ink-4)}
+.zbits span.on{border-color:var(--gold-2);background:var(--gold-4);color:var(--gold)}
+.cousins{display:grid;gap:8px;margin:10px 0}
+.cousin{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.cousin b{font-family:var(--serif);font-size:16px}
+.cousin .r{float:right;font:600 14px var(--mono);color:var(--gold)}
+.cousin p{margin:4px 0 0;font-size:13.5px;color:var(--ink-3)}
+.cousin code{font:12.5px var(--mono);color:var(--ink-2)}
+.pent{display:block;width:100%;max-width:260px;margin:6px auto 14px}
+
+/* ---------- hoja de matemática ---------- */
+.sheet-wrap{position:fixed;inset:0;z-index:60;display:flex;justify-content:center;align-items:flex-end}
+.backdrop{position:absolute;inset:0;background:rgba(4,5,10,.74);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fade .2s ease}
+.sheet{position:relative;width:100%;max-width:780px;max-height:88vh;overflow:auto;overscroll-behavior:contain;border:1px solid var(--line-hi);border-bottom:0;border-radius:22px 22px 0 0;background:var(--bg-2);padding:22px 22px calc(28px + var(--sab));animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:780px){.sheet-wrap{align-items:center}.sheet{border-radius:22px;border-bottom:1px solid var(--line-hi)}}
+.sheet .x{position:sticky;top:0;float:right;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg-2);cursor:pointer;font-size:20px;line-height:1}
+.sheet .k{font:500 11px var(--mono);letter-spacing:.2em;color:var(--gold-2);text-transform:uppercase}
+.sheet h2{font-family:var(--serif);font-weight:600;font-size:26px;margin:4px 0 16px}
+.sheet h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:24px 0 6px;color:var(--gold)}
+.sheet p{color:var(--ink-2);margin:0 0 10px}
+.sheet math{font-size:1.15em}
+.sheet math[display=block]{margin:12px 0;overflow-x:auto;overflow-y:hidden;padding:4px 0}
+.eq{border:1px solid var(--line);border-radius:12px;background:rgba(6,7,14,.5);padding:6px 14px;margin:10px 0;overflow-x:auto}
+.refs{font-size:13.5px;color:var(--ink-3);padding-left:18px}
+.refs li{margin-bottom:6px}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .tile{padding:16px}
+  .tile .ico{width:44px;height:44px}
+  .vbar .t{font-size:13px}
+  .pill{padding:0 11px;font-size:12.5px}
+  .viz{padding:14px 12px;border-radius:16px}
+  .stat .v{font-size:16px}
+  .gcards{grid-template-columns:1fr}
+  .wrap{padding:24px 16px 50px}
+}
+</style>
+</head>
+<body>
+<noscript><p style="padding:24px;font-family:Georgia,serif">Esta pieza interactiva necesita JavaScript para funcionar.</p></noscript>
+
+<div id="home">
+  <header class="hero">
+    <canvas id="cvHero" aria-hidden="true"></canvas>
+    <div class="hero-txt">
+      <p class="kicker">Fibonacci · número áureo</p>
+      <h1>El número más irracional</h1>
+      <p class="sub">Fibonacci y la proporción áurea, sin mitos</p>
+      <p class="phi-line">φ = 1.6180339887…</p>
+      <a class="enter" href="#indice">Entrar <span aria-hidden="true">↓</span></a>
+    </div>
+  </header>
+
+  <main class="indice" id="indice">
+    <div class="sec-head">
+      <h2>Elige por dónde entrar</h2>
+      <p>Cada puerta es visual primero. Si quieres la demostración, cada sección tiene su botón <span class="sig">∑ La matemática</span>.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer class="foot">
+    <p>Una pieza del <a href="https://alex-vazquez73.github.io/">Archivo de Alejandro Vázquez</a>.</p>
+  </footer>
+</div>
+
+<div class="view" id="view" hidden>
+  <div class="vbar">
+    <a class="pill" href="#indice"><span aria-hidden="true">←</span> Índice</a>
+    <div class="t" id="vbarT"></div>
+    <button class="pill math" type="button" id="mathBtn"><span class="sig" aria-hidden="true">∑</span> La matemática</button>
+  </div>
+  <div class="wrap" id="viewBody"></div>
+</div>
+
+<div class="sheet-wrap" id="sheet" hidden>
+  <div class="backdrop" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <button class="x" type="button" data-close aria-label="Cerrar">×</button>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- ======================= 01 · LA REGLA ======================= -->
+<template id="tpl-regla">
+  <div class="v-intro">
+    <span class="num">01 · LA REGLA</span>
+    <h2>Cada número suma los dos anteriores</h2>
+    <p>Empieza con 0 y 1. Suma los dos últimos y escribe el resultado. Repite. Esa es toda la regla, y basta para que aparezcan escaleras, poemas, abejas y una de las constantes más famosas de la matemática.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">La sucesión, término a término</p><p class="viz-sub">Los dos dorados suman el nuevo</p></div>
+      </div>
+      <div class="chips-row" id="fibChips" aria-live="polite"></div>
+      <div class="eqline" id="fibEq"></div>
+      <div class="ctrls">
+        <button class="btn" type="button" id="fibNext">Siguiente término →</button>
+        <button class="btn ghost" type="button" id="fibReset">Reiniciar</button>
+      </div>
+    </div>
+    <div class="txt">
+      <p class="lead">0, 1, 1, 2, 3, 5, 8, 13, 21, 34… Cada número guarda dentro a los dos que lo preceden.</p>
+      <p>Hoy se acostumbra empezar en <strong>0 y 1</strong>: así la regla funciona desde el primer paso (0 + 1 = 1) y fórmulas como la de Binet quedan limpias. Es la misma sucesión de siempre, con un término más al principio.</p>
+      <p>Leonardo de Pisa, a quien siglos después llamaron Fibonacci, la publicó en su <strong>Liber Abaci</strong> de 1202 con un acertijo: una pareja de conejos tiene una nueva pareja cada mes a partir de su segundo mes de vida. ¿Cuántas parejas hay al final del año? Contando mes a mes salen 1, 1, 2, 3, 5, 8… Leonardo empezó en 1 porque contaba conejos, y cero conejos no plantean ningún acertijo.</p>
+      <p>Los conejos de verdad no se reproducen así, y nunca fue la intención. Era un ejercicio de aritmética en un libro que enseñaba a Europa a usar los números indoarábigos.</p>
+      <p class="note">Honestidad histórica: la sucesión no es de Fibonacci. En la India se conocía siglos antes, como verás abajo.</p>
+    </div>
+  </section>
+
+  <div class="block-head">
+    <h3>Escaleras y poesía sánscrita</h3>
+    <p>Sube una escalera de n escalones dando pasos de uno o de dos. ¿De cuántas formas distintas puedes hacerlo? Con 1 escalón hay una forma, con 2 hay dos, con 3 hay tres, con 4 hay cinco… Otra vez la sucesión. Mueve el control y míralas todas.</p>
+  </div>
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">¿De cuántas formas?</p><p class="viz-sub">Pasos de 1 o de 2 para cubrir n tiempos</p></div>
+      </div>
+      <div class="rng"><label for="steps">n =</label><input type="range" id="steps" min="1" max="8" step="1" value="5"><output id="stepsOut">5</output></div>
+      <div class="readout"><span class="big" id="compCount">8 formas</span><span class="lbl" id="compLbl"></span></div>
+      <div class="comps" id="comps" aria-label="Todas las combinaciones"></div>
+      <div class="legend"><span><i class="dot" style="background:rgba(237,231,217,.55);border-radius:3px"></i>1 escalón · sílaba breve (laghu)</span><span><i class="dot" style="background:var(--gold);width:22px;border-radius:3px"></i>2 escalones · sílaba larga (guru)</span></div>
+      <div class="strip" id="compStrip"></div>
+    </div>
+    <div class="txt">
+      <p>La razón es sencilla: tu último paso fue de uno o de dos. Si fue de uno, antes subiste n−1 escalones de todas las formas posibles; si fue de dos, subiste n−2. <strong>Las formas de n son las de n−1 más las de n−2.</strong></p>
+      <p>Cambia «escalón» por «sílaba» y tienes el problema de los poetas de la India. En la métrica sánscrita una sílaba breve dura un tiempo y una larga dura dos. ¿Cuántos ritmos llenan un verso de n tiempos? Pingala lo estudió siglos antes de nuestra era. Virahanka, hacia el siglo VII, y Hemachandra, hacia 1150, ya escribieron la regla de sumar los dos anteriores, décadas o siglos antes que Leonardo de Pisa.</p>
+    </div>
+  </section>
+
+  <div class="block-head">
+    <h3>Una genealogía que sí es Fibonacci</h3>
+    <p>Aquí la regla aparece en la biología real, sin forzar nada. En una colmena, las hembras (obreras y reina) nacen de huevos fecundados: tienen <strong>madre y padre</strong>. Los machos, los zánganos, nacen de huevos sin fecundar: <strong>solo tienen madre</strong>. Esa diferencia basta para que su árbol genealógico sea Fibonacci.</p>
+  </div>
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">El árbol de un zángano</p><p class="viz-sub">Se lee de abajo hacia arriba: cada fila es una generación más atrás</p></div>
+        <button class="btn ghost" type="button" id="beesPlay">↻ Dibujar</button>
+      </div>
+      <div class="chart"><canvas id="cvBees" class="pan" aria-label="Árbol genealógico de una abeja macho: 1, 1, 2, 3, 5, 8 y 13 ancestros por generación."></canvas><div class="tip" id="tipBees"></div></div>
+      <div class="legend"><span><i class="dot" style="background:var(--gold)"></i>hembra: arriba de ella van 2 (madre y padre)</span><span><i class="dot" style="border:1.5px solid var(--ink-2);background:transparent"></i>macho: arriba de él va 1 (solo madre)</span></div>
+    </div>
+    <div class="txt">
+      <p class="lead">Sigue el árbol de abajo hacia arriba, una fila a la vez.</p>
+      <ol class="steps">
+        <li>Abajo está el <strong>zángano</strong>. Es macho, así que arriba de él hay una sola abeja: su <strong>madre</strong>. Total: 1.</li>
+        <li>La madre es hembra, así que tiene madre y padre: <strong>2 abuelos</strong>, una abuela y un abuelo.</li>
+        <li>La abuela aporta 2 (sus padres) y el abuelo, por ser macho, solo 1 (su madre): <strong>3 bisabuelos</strong>.</li>
+        <li>Esos 3 son 2 hembras y 1 macho: 2 + 2 + 1 = <strong>5 tatarabuelos</strong>.</li>
+        <li>Y así sigue: 8, 13, 21…</li>
+      </ol>
+      <p>¿Por qué sale Fibonacci? Cada fila tiene tantas hembras como abejas había en la fila de abajo (porque todas, machos y hembras, tienen madre), y tantos machos como hembras había en la fila de abajo (porque solo las hembras tienen padre). Sumando, <strong>cada fila es la suma de las dos anteriores</strong>. Pasa el cursor sobre una fila para ver cuántas hembras y machos tiene.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-regla">
+  <span class="k">∑ La matemática · 01</span>
+  <h2 id="sheetTitle">La regla y sus conteos</h2>
+  <h3>1. La recurrencia</h3>
+  <div class="eq"><math display="block"><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.6em"/><msub><mi>F</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="1.2em"/><msub><mi>F</mi><mi>n</mi></msub><mo>=</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub></math></div>
+  <p>Dos semillas y una regla lineal: todo lo demás está determinado. Empezar en <math><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn></math> da <math><msub><mi>F</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></math>, la misma numeración de Leonardo a partir de ahí, y hace que la fórmula de Binet valga desde <math><mi>n</mi><mo>=</mo><mn>0</mn></math>.</p>
+  <h3>2. Las escaleras</h3>
+  <p>Sea <math><msub><mi>W</mi><mi>n</mi></msub></math> el número de formas de cubrir n tiempos con piezas de 1 y de 2. Clasificando por la última pieza:</p>
+  <div class="eq"><math display="block"><msub><mi>W</mi><mi>n</mi></msub><mo>=</mo><msub><mi>W</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>W</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>,</mo><mspace width="1em"/><msub><mi>W</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.5em"/><msub><mi>W</mi><mn>2</mn></msub><mo>=</mo><mn>2</mn><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><msub><mi>W</mi><mi>n</mi></msub><mo>=</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></math></div>
+  <p>Es el mismo argumento que dieron los prosodistas indios para los ritmos de sílabas breves y largas.</p>
+  <h3>3. El zángano</h3>
+  <p>Sean <math><msub><mi>h</mi><mi>g</mi></msub></math> y <math><msub><mi>m</mi><mi>g</mi></msub></math> las hembras y machos en la generación <math><mi>g</mi></math> de ancestros. Toda abeja tiene una madre, y solo las hembras tienen padre:</p>
+  <div class="eq"><math display="block"><msub><mi>h</mi><mrow><mi>g</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>h</mi><mi>g</mi></msub><mo>+</mo><msub><mi>m</mi><mi>g</mi></msub><mo>,</mo><mspace width="1.2em"/><msub><mi>m</mi><mrow><mi>g</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>h</mi><mi>g</mi></msub></math></div>
+  <p>Sumando, el total <math><msub><mi>T</mi><mi>g</mi></msub><mo>=</mo><msub><mi>h</mi><mi>g</mi></msub><mo>+</mo><msub><mi>m</mi><mi>g</mi></msub></math> cumple <math><msub><mi>T</mi><mrow><mi>g</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>T</mi><mi>g</mi></msub><mo>+</mo><msub><mi>T</mi><mrow><mi>g</mi><mo>−</mo><mn>1</mn></mrow></msub></math>. Partiendo de un zángano (<math><msub><mi>T</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn></math>, <math><msub><mi>T</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></math>) sale la sucesión.</p>
+  <h3>4. Los conejos</h3>
+  <p>Si <math><msub><mi>A</mi><mi>n</mi></msub></math> son las parejas adultas y <math><msub><mi>J</mi><mi>n</mi></msub></math> las jóvenes, cada adulta produce una joven y cada joven madura: <math><msub><mi>A</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>A</mi><mi>n</mi></msub><mo>+</mo><msub><mi>J</mi><mi>n</mi></msub></math>, <math><msub><mi>J</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>A</mi><mi>n</mi></msub></math>. Es exactamente el sistema de las abejas.</p>
+</template>
+
+<!-- ======================= 02 · EL NÚMERO ======================= -->
+<template id="tpl-numero">
+  <div class="v-intro">
+    <span class="num">02 · DE LA REGLA AL NÚMERO</span>
+    <h2>Divide cada término entre el anterior</h2>
+    <p>1, 1, 2, 3, 5, 8, 13… Toma un término y divídelo entre el anterior. Los cocientes no se reparten al azar: se enroscan alrededor de un solo número.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div>
+          <p class="viz-title" id="ratioTitle">El cociente persigue a φ</p>
+          <p class="viz-sub" id="ratioSub">Fₙ₊₁ / Fₙ para cada término n</p>
+        </div>
+        <div class="seg" role="group" aria-label="Qué graficar">
+          <button type="button" data-mode="ratio" aria-pressed="true">Cociente</button>
+          <button type="button" data-mode="error" aria-pressed="false">Error</button>
+        </div>
+      </div>
+      <div class="readout"><span class="big" id="ratioBig">13 / 8 = 1.62500</span><span class="lbl" id="ratioLbl">término 6</span></div>
+      <div class="chart"><canvas id="cvRatio" tabindex="0" aria-label="Gráfica del cociente entre términos consecutivos de Fibonacci. Usa las flechas para recorrer los términos."></canvas><div class="tip" id="tipRatio"></div></div>
+      <div class="ctrls"><button class="btn" type="button" id="ratioPlay">▶ Construir de nuevo</button></div>
+      <details class="tbl"><summary>Ver como tabla</summary><div id="ratioTable"></div></details>
+    </div>
+    <div class="txt">
+      <p class="lead">El primer cociente es 1, el segundo 2, luego 1.5, 1.667, 1.6, 1.625… Cada uno se pasa de largo un poco hacia arriba o hacia abajo, y la oscilación se cierra sobre <strong>1.6180339887…</strong>, el número que llamamos φ (phi).</p>
+      <p>¿Por qué ahí? Si los términos crecen multiplicándose casi siempre por el mismo factor, la regla «sumar los dos anteriores» obliga a ese factor a cumplir una condición muy precisa: <strong>su cuadrado tiene que ser él mismo más uno</strong>. Solo un número positivo lo logra.</p>
+      <p>Cambia a <strong>Error</strong> y verás lo más sorprendente: en escala logarítmica la distancia a φ cae en línea recta. Cada término divide el error entre 2.618 (que es φ²) y gana casi medio dígito decimal correcto. Para el término 40 ya coinciden 16 cifras.</p>
+      <p class="note">Esto no es exclusivo de 1 y 1. Empieza con cualesquiera dos números y el cociente también termina en φ. Lo puedes probar en «Tu turno».</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">Corta un segmento</p><p class="viz-sub">Mueve el corte: dos razones, una sola coincidencia</p></div>
+        <span class="gold-flag" id="goldFlag">✦ Punto áureo</span>
+      </div>
+      <div class="bar" aria-hidden="true"><div class="a" id="segA">a</div><div class="b" id="segB">b</div></div>
+      <input type="range" id="cut" min="0.5" max="0.8" step="0.001" value="0.7" aria-label="Posición del corte (proporción de la parte mayor)">
+      <div class="chart"><canvas id="cvRecta" aria-label="Las dos razones en función de la posición del corte; se cruzan en el punto áureo."></canvas><div class="tip" id="tipRecta"></div></div>
+      <div class="legend"><span><i style="border-color:var(--gold)"></i>(a + b) / a · el todo entre la parte mayor</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>a / b · la mayor entre la menor</span></div>
+      <div class="ctrls"><button class="btn" type="button" id="goGolden">Ir al punto áureo</button><span style="font-size:13px;color:var(--ink-3)" id="rectaVals"></span></div>
+    </div>
+    <div class="txt">
+      <h3>El mismo número, desde la geometría</h3>
+      <p>Hace unos 2,300 años Euclides propuso cortar un segmento de modo que <strong>el todo sea a la parte mayor como la mayor es a la menor</strong>. Lo llamó división en media y extrema razón.</p>
+      <p>Al mover el corte, una razón sube y la otra baja. Solo se igualan en un punto, cuando la parte mayor ocupa el 61.8&#8239;% del total. Ahí ambas valen exactamente φ.</p>
+      <p>La sucesión de Fibonacci (que es aritmética) y el corte de Euclides (que es geometría) llegan a la misma ecuación sin haberse puesto de acuerdo. Esa coincidencia es la verdadera razón de que φ fascine tanto.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-numero">
+  <span class="k">∑ La matemática · 02</span>
+  <h2 id="sheetTitle">De dónde sale φ</h2>
+  <h3>1. El cociente y la ecuación</h3>
+  <p>Divide la regla <math><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>F</mi><mi>n</mi></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></math> entre <math><msub><mi>F</mi><mi>n</mi></msub></math>. Si el cociente se estabiliza en un valor <math><mi>x</mi></math>, el término <math><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>/</mo><msub><mi>F</mi><mi>n</mi></msub></math> vale <math><mn>1</mn><mo>/</mo><mi>x</mi></math>:</p>
+  <div class="eq"><math display="block"><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math></div>
+  <p>La raíz positiva de esa cuadrática es φ:</p>
+  <div class="eq"><math display="block"><mi>φ</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow><mn>2</mn></mfrac><mo>≈</mo><mn>1.6180339887</mn></math></div>
+  <p>La otra raíz, <math><mi>ψ</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msqrt><mn>5</mn></msqrt><mo stretchy="false">)</mo><mo>/</mo><mn>2</mn><mo>≈</mo><mo>−</mo><mn>0.618</mn></math>, también importa: es la que hace oscilar al cociente.</p>
+  <h3>2. Fórmula de Binet</h3>
+  <p>Toda sucesión que obedece la regla es una mezcla de potencias de φ y de ψ. Con las semillas 1 y 1:</p>
+  <div class="eq"><math display="block"><msub><mi>F</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>φ</mi><mi>n</mi></msup><mo>−</mo><msup><mi>ψ</mi><mi>n</mi></msup></mrow><msqrt><mn>5</mn></msqrt></mfrac></math></div>
+  <h3>3. Por qué el error cae en línea recta</h3>
+  <div class="eq"><math display="block"><mfrac><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>F</mi><mi>n</mi></msub></mfrac><mo>−</mo><mi>φ</mi><mo>=</mo><mfrac><mrow><msqrt><mn>5</mn></msqrt><mspace width="0.15em"/><msup><mi>ψ</mi><mi>n</mi></msup></mrow><mrow><msup><mi>φ</mi><mi>n</mi></msup><mo>−</mo><msup><mi>ψ</mi><mi>n</mi></msup></mrow></mfrac><mo>≈</mo><msqrt><mn>5</mn></msqrt><mspace width="0.15em"/><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><msup><mi>φ</mi><mn>2</mn></msup></mfrac><mo>)</mo></mrow><mi>n</mi></msup></math></div>
+  <p>El signo alterna (por eso oscila arriba y abajo) y la magnitud se divide entre <math><msup><mi>φ</mi><mn>2</mn></msup><mo>≈</mo><mn>2.618</mn></math> en cada paso. Como <math><msub><mi>log</mi><mn>10</mn></msub><mn>2.618</mn><mo>≈</mo><mn>0.418</mn></math>, cada término gana unas cuatro décimas de dígito.</p>
+  <h3>4. El corte de Euclides</h3>
+  <div class="eq"><math display="block"><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>a</mi></mfrac><mo>=</mo><mfrac><mi>a</mi><mi>b</mi></mfrac><mo>=</mo><mi>x</mi><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>x</mi></mfrac><mo>=</mo><mi>x</mi></math></div>
+  <p>La misma ecuación que salió de la sucesión. La parte mayor ocupa <math><mn>1</mn><mo>/</mo><mi>φ</mi><mo>≈</mo><mn>0.618</mn></math> del total.</p>
+  <h3>5. Una consecuencia: la fracción continua</h3>
+  <p>Sustituir <math><mi>x</mi><mo>=</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>/</mo><mi>x</mi></math> dentro de sí misma, sin fin, da</p>
+  <div class="eq"><math display="block"><mi>φ</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><mo>⋯</mo></mrow></mfrac></mrow></mfrac></mrow></mfrac><mspace width="1.4em"/><mi>φ</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo><msqrt><mrow><mn>1</mn><mo>+</mo><msqrt><mrow><mn>1</mn><mo>+</mo><mo>⋯</mo></mrow></msqrt></mrow></msqrt></mrow></msqrt></math></div>
+  <p>Cortar la fracción en cualquier piso da exactamente un cociente de Fibonacci. El radical anidado sale igual, de <math><mi>x</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></msqrt></math>.</p>
+</template>
+
+<!-- ======================= 03 · LA ESPIRAL ======================= -->
+<template id="tpl-espiral">
+  <div class="v-intro">
+    <span class="num">03 · LA ESPIRAL</span>
+    <h2>Cuadrados que crecen, una curva que gira</h2>
+    <p>Dibuja un cuadrado por cada término y acomódalos girando. Cada cuadrado nuevo cabe exacto en el lado largo de los anteriores. Une sus esquinas con cuartos de círculo y aparece la imagen más famosa de φ.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">El mosaico de Fibonacci</p><p class="viz-sub" id="tileSub">Cuadrados de lado 1, 1, 2, 3, 5, 8…</p></div>
+        <div class="seg" role="group" aria-label="Capas">
+          <button type="button" id="tgSq" aria-pressed="true">Cuadrados</button>
+          <button type="button" id="tgFib" aria-pressed="true">Fibonacci</button>
+          <button type="button" id="tgLog" aria-pressed="false">Áurea</button>
+        </div>
+      </div>
+      <div class="chart"><canvas id="cvTiles" class="pan" aria-label="Mosaico de cuadrados de Fibonacci con su espiral."></canvas></div>
+      <div class="rng"><label for="nSq">cuadrados</label><input type="range" id="nSq" min="1" max="11" step="1" value="11"><output id="nSqOut">11</output></div>
+      <div class="readout" style="margin-top:6px"><span class="big" id="sumEq" style="font-size:clamp(15px,2vw,19px)"></span></div>
+      <div class="legend"><span><i style="border-color:var(--gold)"></i>espiral de Fibonacci (cuartos de círculo)</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>espiral áurea verdadera (logarítmica)</span></div>
+    </div>
+    <div class="txt">
+      <p class="lead">Mira el rectángulo que forman todos los cuadrados juntos: mide un término de ancho por el siguiente de alto.</p>
+      <p>Eso guarda una identidad bonita: la suma de los cuadrados de los primeros términos es igual al producto de los dos últimos. Mueve el control y compruébalo debajo del dibujo. <strong>No hace falta álgebra: el área del rectángulo es la suma de las áreas de los cuadrados.</strong></p>
+      <h3>Antes de encender la espiral áurea, apuesta</h3>
+      <p>Hay dos espirales posibles aquí. La dorada está hecha de cuartos de círculo, uno por cuadrado. La otra es la espiral áurea verdadera, una curva continua que crece exactamente φ veces cada cuarto de vuelta. ¿Coinciden?</p>
+      <div class="opts" id="spiralOpts">
+        <button class="opt" type="button" data-ok="0">Sí, son idénticas</button>
+        <button class="opt" type="button" data-ok="1">Casi, pero no exactamente</button>
+        <button class="opt" type="button" data-ok="0">No se parecen en nada</button>
+      </div>
+      <div class="verdict" id="spiralVerdict" hidden><b></b><p></p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">Cuánto crece en cada cuarto de vuelta</p><p class="viz-sub">El lado de cada cuadrado entre el anterior</p></div></div>
+      <div class="chart"><canvas id="cvGrowth" aria-label="Factor de crecimiento de la espiral de Fibonacci por cuarto de vuelta, comparado con φ."></canvas><div class="tip" id="tipGrowth"></div></div>
+      <div class="legend"><span><i class="dot" style="background:var(--gold);border-radius:2px"></i>espiral de Fibonacci</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>espiral áurea: siempre φ</span></div>
+    </div>
+    <div class="txt">
+      <h3>Discreta contra continua</h3>
+      <p>La espiral áurea crece siempre al mismo ritmo: cada cuarto de vuelta su radio se multiplica por 1.618. Por eso se llama logarítmica, y por eso se ve igual a cualquier escala.</p>
+      <p>La espiral de Fibonacci cambia de ritmo en cada cuadrado: crece ×1, luego ×2, ×1.5, ×1.67, ×1.6… Al principio es torpe; muy pronto el ritmo se vuelve casi φ y las dos curvas se confunden. <strong>Casi, pero nunca del todo</strong>: la sucesión es discreta y persigue a la curva continua sin alcanzarla.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-espiral">
+  <span class="k">∑ La matemática · 03</span>
+  <h2 id="sheetTitle">La espiral, con exactitud</h2>
+  <h3>1. La suma de cuadrados</h3>
+  <div class="eq"><math display="block"><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msubsup><mi>F</mi><mi>k</mi><mn>2</mn></msubsup><mo>=</mo><msub><mi>F</mi><mi>n</mi></msub><mspace width="0.15em"/><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></math></div>
+  <p>Por inducción: si el rectángulo de <math><msub><mi>F</mi><mi>n</mi></msub><mo>×</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></math> ya tiene esa área, añadir el cuadrado de lado <math><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></math> en su lado largo da <math><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">(</mo><msub><mi>F</mi><mi>n</mi></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>2</mn></mrow></msub></math>.</p>
+  <h3>2. La espiral logarítmica</h3>
+  <p>En coordenadas polares alrededor de su centro, la espiral áurea es</p>
+  <div class="eq"><math display="block"><mi>r</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mspace width="0.15em"/><msup><mi>e</mi><mrow><mi>b</mi><mi>θ</mi></mrow></msup><mo>,</mo><mspace width="1.2em"/><mi>b</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>ln</mi><mi>φ</mi></mrow><mi>π</mi></mfrac><mo>≈</mo><mn>0.3063</mn></math></div>
+  <p>Girar un cuarto de vuelta (<math><mi>θ</mi><mo>→</mo><mi>θ</mi><mo>+</mo><mi>π</mi><mo>/</mo><mn>2</mn></math>) multiplica el radio por <math><msup><mi>e</mi><mrow><mi>b</mi><mi>π</mi><mo>/</mo><mn>2</mn></mrow></msup><mo>=</mo><mi>φ</mi></math>. Una vuelta completa lo multiplica por <math><msup><mi>φ</mi><mn>4</mn></msup><mo>≈</mo><mn>6.85</mn></math>. Girar y escalar son la misma operación: esa es su autosemejanza.</p>
+  <h3>3. Por qué casi coinciden</h3>
+  <p>La espiral de Fibonacci crece por <math><msub><mi>F</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>/</mo><msub><mi>F</mi><mi>k</mi></msub></math> en el cuarto de vuelta <math><mi>k</mi></math>. Como ese cociente tiende a φ (sección 02), la curva discreta se pega a la continua. Pero cada cuarto de círculo tiene curvatura constante y la logarítmica no: nunca son la misma curva.</p>
+  <p>En el dibujo, la espiral áurea pasa exactamente por las esquinas de un mosaico de rectángulos áureos con el mismo cuadrado mayor. Con pocos cuadrados la diferencia se nota; con once ya hay que acercarse.</p>
+</template>
+
+<!-- ======================= 04 · NATURALEZA ======================= -->
+<template id="tpl-naturaleza">
+  <div class="v-intro">
+    <span class="num">04 · DONDE VIVE DE VERDAD</span>
+    <h2>El girasol no sabe matemáticas</h2>
+    <p>Y sin embargo coloca cada semilla nueva girada 137.5° respecto a la anterior. No por estética: es la manera más eficiente de empacar. Aquí están los lugares donde φ aparece sin trampa.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">Un girasol, generado en vivo</p><p class="viz-sub">Cada semilla gira un ángulo fijo respecto a la anterior</p></div>
+        <div class="seg" role="group" aria-label="Colorear espirales">
+          <button type="button" data-arms="0" aria-pressed="true">Semillas</button>
+          <button type="button" data-arms="21" aria-pressed="false">21 espirales</button>
+          <button type="button" data-arms="34" aria-pressed="false">34 espirales</button>
+        </div>
+      </div>
+      <div class="chart"><canvas id="cvSun" class="pan" aria-label="Girasol de 600 semillas generado con el ángulo elegido."></canvas></div>
+      <div class="rng"><label for="sunAng">ángulo</label><input type="range" id="sunAng" min="130" max="145" step="0.01" value="137.51"><output id="sunOut">137.51°</output></div>
+      <div class="presets" id="sunPresets">
+        <button type="button" data-a="137.508">137.508° · áureo</button>
+        <button type="button" data-a="137.6">137.6°</button>
+        <button type="button" data-a="144">144° · 2/5 de vuelta</button>
+        <button type="button" data-a="135">135° · 3/8</button>
+      </div>
+    </div>
+    <div class="txt">
+      <p class="lead">Mueve el ángulo apenas una décima de grado y el girasol se rompe en brazos con huecos. Solo cerca de 137.5° las semillas llenan el disco parejo.</p>
+      <p>Ese ángulo es la vuelta completa dividida entre φ²: <strong>360° / 2.618 ≈ 137.508°</strong>. Si el giro fuera una fracción sencilla de vuelta, como 2/5 (144°), cada quinta semilla caería alineada con la primera y se formarían cinco rayos con espacio desperdiciado. φ es el número más difícil de aproximar con fracciones, así que con él las semillas nunca se alinean.</p>
+      <p>Colorea las espirales: con el ángulo áureo aparecen <strong>21 en un sentido y 34 en el otro</strong>, dos Fibonacci consecutivos. En girasoles reales se cuentan 34 y 55, o 55 y 89. Las piñas de pino muestran 8 y 13; las piñas (ananás), 8, 13 y 21.</p>
+      <p class="note">El modelo es el de Vogel (1979): la semilla n está a una distancia proporcional a √n del centro y girada n × 137.508°. Con eso basta para reproducir la flor.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">Qué tan parejo se llena el disco</p><p class="viz-sub">Separación mínima entre semillas vecinas, según el ángulo</p></div></div>
+      <div class="chart"><canvas id="cvPack" aria-label="Calidad del empaquetamiento según el ángulo de giro; el máximo está en el ángulo áureo."></canvas><div class="tip" id="tipPack"></div></div>
+      <p class="src">Calculado aquí mismo con 300 semillas por ángulo. La línea vertical sigue tu control.</p>
+    </div>
+    <div class="txt">
+      <h3>El pico no es casualidad</h3>
+      <p>Esta gráfica mide, para cada ángulo, qué tan cerca quedan las dos semillas más apretadas. Más alto es mejor: nadie se encima.</p>
+      <p>Los ángulos que son fracciones simples de vuelta se desploman, porque alinean semillas. El máximo está justo en 137.5°. La planta no calcula φ: las que crecían con otros ángulos sencillamente desperdiciaban espacio, y la selección natural hizo el resto.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">φ dentro de un icosaedro</p><p class="viz-sub">Arrástralo para girarlo</p></div>
+        <button class="btn ghost" type="button" id="icoRects" aria-pressed="true">Ocultar rectángulos</button>
+      </div>
+      <div class="chart"><canvas id="cvIco" aria-label="Icosaedro en rotación con tres rectángulos áureos perpendiculares."></canvas></div>
+    </div>
+    <div class="txt">
+      <h3>Geometría: el pentágono y el icosaedro</h3>
+      <p>En un pentágono regular, la diagonal mide exactamente φ veces el lado. Por eso el pentagrama está lleno de φ: cada segmento es φ veces el siguiente más pequeño, y adentro aparece otro pentágono, y otro.</p>
+      <svg class="pent" viewBox="0 0 220 210" aria-label="Pentágono con su pentagrama; la diagonal mide φ veces el lado.">
+        <polygon points="110,12 204,80 168,190 52,190 16,80" fill="none" stroke="rgba(237,231,217,.55)" stroke-width="1.5"/>
+        <polyline points="110,12 168,190 16,80 204,80 52,190 110,12" fill="none" stroke="#E7C46B" stroke-width="1.6"/>
+        <line x1="52" y1="190" x2="168" y2="190" stroke="rgba(237,231,217,.95)" stroke-width="3"/>
+        <line x1="16" y1="80" x2="204" y2="80" stroke="#E7C46B" stroke-width="3.2" opacity=".55"/>
+        <text x="110" y="206" fill="rgba(237,231,217,.85)" font-size="12" text-anchor="middle" font-family="system-ui">lado = 1</text>
+        <text x="110" y="74" fill="#E7C46B" font-size="12" text-anchor="middle" font-family="system-ui">diagonal = φ</text>
+      </svg>
+      <p>El icosaedro, uno de los cinco sólidos platónicos, esconde tres rectángulos áureos perpendiculares entre sí: sus doce esquinas son exactamente los doce vértices del sólido. Muchos virus tienen cápsides con simetría de icosaedro.</p>
+      <h3>Física: cuasicristales e imanes cuánticos</h3>
+      <p>En 1982 Dan Shechtman encontró una aleación con simetría de cinco, algo que la cristalografía daba por imposible. Eran <strong>cuasicristales</strong>: ordenados pero sin repetirse nunca, como los mosaicos de Penrose, donde la proporción de piezas gruesas y delgadas tiende a φ. Le dieron el Nobel de Química en 2011.</p>
+      <p>En 2010, un equipo que estudiaba un imán cuántico (niobato de cobalto) a temperatura cercana al cero absoluto midió dos resonancias cuyas frecuencias guardaban la razón 1.618. La teoría ya lo había predicho a partir de una simetría llamada E8.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-naturaleza">
+  <span class="k">∑ La matemática · 04</span>
+  <h2 id="sheetTitle">Ángulos, pentágonos y sólidos</h2>
+  <h3>1. El ángulo áureo</h3>
+  <div class="eq"><math display="block"><mi>α</mi><mo>=</mo><mfrac><msup><mn>360</mn><mo>∘</mo></msup><msup><mi>φ</mi><mn>2</mn></msup></mfrac><mo>=</mo><msup><mn>360</mn><mo>∘</mo></msup><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mfrac><mn>1</mn><mi>φ</mi></mfrac><mo stretchy="false">)</mo><mo>≈</mo><msup><mn>137.508</mn><mo>∘</mo></msup></math></div>
+  <p>Es la parte menor de la vuelta cuando la cortas en media y extrema razón (girar 222.5° hacia un lado es lo mismo que 137.5° hacia el otro).</p>
+  <h3>2. El modelo de Vogel</h3>
+  <div class="eq"><math display="block"><msub><mi>r</mi><mi>n</mi></msub><mo>=</mo><mi>c</mi><msqrt><mi>n</mi></msqrt><mo>,</mo><mspace width="1.2em"/><msub><mi>θ</mi><mi>n</mi></msub><mo>=</mo><mi>n</mi><mo>⋅</mo><mi>α</mi></math></div>
+  <p>Con <math><msqrt><mi>n</mi></msqrt></math> cada semilla ocupa la misma área. Si <math><mi>α</mi><mo>/</mo><msup><mn>360</mn><mo>∘</mo></msup><mo>=</mo><mi>p</mi><mo>/</mo><mi>q</mi></math> es racional, las semillas <math><mi>n</mi></math> y <math><mi>n</mi><mo>+</mo><mi>q</mi></math> quedan en el mismo rayo y aparecen <math><mi>q</mi></math> brazos rectos. Un número irracional evita los rayos; uno cuya fracción continua solo tiene unos (φ) los evita lo más posible.</p>
+  <h3>3. Por qué se ven 21 y 34 espirales</h3>
+  <p>Las espirales visibles unen semillas cuyo índice difiere en <math><mi>q</mi></math>, donde <math><mi>q</mi><mi>α</mi></math> queda muy cerca de una vuelta entera. Los mejores <math><mi>q</mi></math> son los denominadores de las aproximaciones de <math><mn>1</mn><mo>/</mo><msup><mi>φ</mi><mn>2</mn></msup></math>, que son números de Fibonacci: 13, 21, 34, 55… Cuáles se ven depende del tamaño de la flor.</p>
+  <h3>4. El pentágono</h3>
+  <p>En un pentágono de lado 1 con diagonal <math><mi>d</mi></math>, dos diagonales que se cruzan forman triángulos semejantes. La semejanza da</p>
+  <div class="eq"><math display="block"><mfrac><mi>d</mi><mn>1</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>d</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><msup><mi>d</mi><mn>2</mn></msup><mo>=</mo><mi>d</mi><mo>+</mo><mn>1</mn><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><mi>d</mi><mo>=</mo><mi>φ</mi></math></div>
+  <h3>5. El icosaedro</h3>
+  <p>Sus doce vértices son las permutaciones cíclicas de</p>
+  <div class="eq"><math display="block"><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mo>±</mo><mn>1</mn><mo>,</mo><mo>±</mo><mi>φ</mi><mo stretchy="false">)</mo></math></div>
+  <p>Fijando una coordenada en cero, los cuatro puntos que quedan forman un rectángulo de lados 2 y 2φ, es decir, áureo. Hay tres, uno por plano.</p>
+</template>
+
+<!-- ======================= 05 · MITOS ======================= -->
+<template id="tpl-mitos">
+  <div class="v-intro">
+    <span class="num">05 · DONDE LA INVENTAMOS</span>
+    <h2>Si lo buscas, lo encuentras</h2>
+    <p>φ tiene fama de estar en el Partenón, en la Mona Lisa, en el ombligo y en el nautilus. Casi todo eso es leyenda. Aquí tienes una herramienta para entender por qué la leyenda es tan fácil de fabricar.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">¿Es áureo?</p><p class="viz-sub">Escribe dos medidas de cualquier cosa</p></div></div>
+      <div class="field">
+        <label>largo <input class="num-in" id="mA" type="number" inputmode="decimal" min="0" step="any" value="85.6"></label>
+        <label>ancho <input class="num-in" id="mB" type="number" inputmode="decimal" min="0" step="any" value="53.98"></label>
+      </div>
+      <div class="presets" id="mPresets"></div>
+      <div class="readout" style="margin-top:8px"><span class="big" id="mRatio"></span><span class="lbl" id="mLbl"></span></div>
+      <div class="chart"><canvas id="cvLine" aria-label="Recta numérica con tu razón y las razones de referencia."></canvas></div>
+      <p class="disclaimer" id="mMsg"></p>
+    </div>
+    <div class="txt">
+      <p class="lead">Una tarjeta bancaria mide 85.60 × 53.98 mm. Razón: 1.586. ¿Diseño áureo?</p>
+      <p>Está a 2&#8239;% de φ. Pero el estándar ISO que la define no menciona φ, y una hoja carta o una pantalla caen igual de cerca de otras razones que nadie llama mágicas. El problema es la <strong>tolerancia</strong>: si aceptas ±5&#8239;%, cualquier razón entre 1.54 y 1.70 «es áurea», y en esa franja caben 5:3, 8:5 y 16:10.</p>
+      <p>El otro problema es la <strong>libertad para medir</strong>. En un edificio o un rostro hay decenas de puntos; con 10 puntos hay 45 distancias y casi 2,000 razones posibles. Alguna caerá cerca de 1.618. Encontrarla no prueba nada.</p>
+      <div class="myths">
+        <div class="myth"><span class="tag">Leyenda</span><h4>El Partenón</h4><p>No hay ningún documento griego que diga que se diseñó con φ. Las mediciones que lo «encuentran» eligen dónde empieza y termina el rectángulo (¿con escalones?, ¿con frontón?); con otras elecciones sale otra razón.</p></div>
+        <div class="myth"><span class="tag">Leyenda</span><h4>La Mona Lisa</h4><p>Leonardo ilustró el libro de Luca Pacioli sobre la «divina proporción», pero no hay evidencia de que la usara al pintar. Los rectángulos áureos sobre su cara se dibujan después, a conveniencia.</p></div>
+        <div class="myth"><span class="tag">Leyenda</span><h4>El ombligo</h4><p>La razón entre la estatura y la altura del ombligo varía entre personas, más o menos entre 1.55 y 1.70. Promediando mucha gente sale algo cercano a 1.6, como sale cerca de casi cualquier cosa.</p></div>
+        <div class="myth"><span class="tag">Corregido</span><h4>El nautilus</h4><p>Sí es una espiral logarítmica, pero no áurea. Crece unas 1.31 veces por cuarto de vuelta; la áurea crecería 1.618. Compáralas en la gráfica de abajo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">Nautilus contra espiral áurea</p><p class="viz-sub">Tres vueltas de cada una, a la misma escala exterior</p></div></div>
+      <div class="chart"><canvas id="cvNaut" class="pan" aria-label="Comparación de una espiral áurea y la espiral de un nautilus real."></canvas></div>
+      <p class="src">Crecimiento del nautilus: medición de 80 conchas de la colección del Smithsonian (Nexus Network Journal, 2019).</p>
+    </div>
+    <div class="txt">
+      <h3>El nautilus, medido</h3>
+      <p>Un estudio midió 80 conchas de nautilus del Smithsonian. Su espiral crece en promedio <strong>1.31 veces por cuarto de vuelta</strong>, entre 1.26 y 1.35 según el ejemplar. Por vuelta completa crece unas 2.9 veces.</p>
+      <p>Una espiral áurea crecería φ ≈ 1.618 por cuarto de vuelta, unas 6.85 veces por vuelta. Es mucho más abierta. Puestas lado a lado, no se parecen: el nautilus da vueltas apretadas; la áurea se escapa hacia afuera.</p>
+      <p class="note">La lección no es que φ sea falso, sino que lo verdadero (girasoles, pentágonos, cuasicristales) es más asombroso precisamente porque resiste la medición.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-mitos">
+  <span class="k">∑ La matemática · 05</span>
+  <h2 id="sheetTitle">Cómo se fabrica un φ</h2>
+  <h3>1. La franja de tolerancia</h3>
+  <p>Aceptar un error relativo <math><mi>ε</mi></math> alrededor de φ es aceptar cualquier razón en</p>
+  <div class="eq"><math display="block"><mrow><mo>[</mo><mi>φ</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>ε</mi><mo stretchy="false">)</mo><mo>,</mo><mspace width="0.3em"/><mi>φ</mi><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>ε</mi><mo stretchy="false">)</mo><mo>]</mo></mrow><mspace width="1em"/><mover><mo>=</mo><mrow><mi>ε</mi><mo>=</mo><mn>5</mn><mi>%</mi></mrow></mover><mspace width="1em"/><mrow><mo>[</mo><mn>1.537</mn><mo>,</mo><mspace width="0.3em"/><mn>1.699</mn><mo>]</mo></mrow></math></div>
+  <h3>2. Muchas razones posibles</h3>
+  <p>Con <math><mi>k</mi></math> puntos marcados en un objeto hay <math><mi>D</mi><mo>=</mo><mi>k</mi><mo stretchy="false">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>/</mo><mn>2</mn></math> distancias y <math><mi>D</mi><mo stretchy="false">(</mo><mi>D</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></math> razones ordenadas. Para <math><mi>k</mi><mo>=</mo><mn>10</mn></math>: 45 distancias y 1,980 razones. Si una razón al azar cae en la franja con probabilidad <math><mi>p</mi></math>, la probabilidad de no encontrar ninguna es aproximadamente</p>
+  <div class="eq"><math display="block"><msup><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo></mrow><mn>1980</mn></msup><mo>≈</mo><mn>0</mn><mspace width="1em"/><mtext>incluso con </mtext><mi>p</mi><mo>=</mo><mn>0.01</mn></math></div>
+  <p>(Las razones no son independientes, pero el orden de magnitud basta para entender por qué siempre «aparece».)</p>
+  <h3>3. Comparar espirales sin trampa</h3>
+  <p>Toda espiral logarítmica <math><mi>r</mi><mo>=</mo><mi>a</mi><msup><mi>e</mi><mrow><mi>b</mi><mi>θ</mi></mrow></msup></math> tiene un factor de crecimiento por cuarto de vuelta <math><mi>g</mi><mo>=</mo><msup><mi>e</mi><mrow><mi>b</mi><mi>π</mi><mo>/</mo><mn>2</mn></mrow></msup></math>. Lo que hay que comparar es <math><mi>g</mi></math>:</p>
+  <div class="eq"><math display="block"><msub><mi>g</mi><mtext>áurea</mtext></msub><mo>=</mo><mi>φ</mi><mo>≈</mo><mn>1.618</mn><mspace width="1.4em"/><msub><mi>g</mi><mtext>nautilus</mtext></msub><mo>≈</mo><mn>1.31</mn><mspace width="1.4em"/><msubsup><mi>g</mi><mtext>nautilus</mtext><mn>4</mn></msubsup><mo>≈</mo><mn>2.94</mn><mspace width="0.6em"/><mtext>vs</mtext><mspace width="0.6em"/><msup><mi>φ</mi><mn>4</mn></msup><mo>≈</mo><mn>6.85</mn></math></div>
+  <h3>Referencias</h3>
+  <ul class="refs">
+    <li>George Markowsky, «Misconceptions about the Golden Ratio», <em>The College Mathematics Journal</em>, 1992.</li>
+    <li>Clement Falbo, «The Golden Ratio: A Contrary Viewpoint», <em>The College Mathematics Journal</em>, 2005.</li>
+    <li>«Nautilus Spirals and the Meta-Golden Ratio Chi», <em>Nexus Network Journal</em>, 2019.</li>
+    <li>Mario Livio, <em>La proporción áurea</em>, 2002.</li>
+  </ul>
+</template>
+
+<!-- ======================= 06 · MERCADOS ======================= -->
+<template id="tpl-mercados">
+  <div class="v-intro">
+    <span class="num">06 · EN LOS MERCADOS</span>
+    <h2>Los retrocesos de Fibonacci</h2>
+    <p>Abre cualquier plataforma de gráficas y encontrarás una herramienta con estos números: 23.6, 38.2, 50, 61.8, 78.6. Es la aplicación más popular de φ fuera de las matemáticas. Veamos de dónde sale, un caso real y cuánto vale.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div>
+          <p class="viz-title" id="tradeTitle">Dow Jones, 2023 – 2025</p>
+          <p class="viz-sub">Arrastra los dos círculos para marcar el inicio y el fin del tramo</p>
+        </div>
+        <div class="seg" role="group" aria-label="Serie">
+          <button type="button" data-series="dow" aria-pressed="true">Dow real</button>
+          <button type="button" data-series="sim" aria-pressed="false">Simulado</button>
+          <button type="button" id="extBtn" aria-pressed="false">+ Extensiones</button>
+        </div>
+      </div>
+      <div class="chart"><canvas id="cvTrade" aria-label="Precio con niveles de retroceso de Fibonacci entre dos puntos elegidos."></canvas><div class="tip" id="tipTrade"></div></div>
+      <div class="legend"><span><i style="border-color:var(--ink-2)"></i>Cierre diario</span><span><i style="border-color:var(--gold)"></i>Niveles clave 38.2&#8239;% y 61.8&#8239;%</span><span><i style="border-color:var(--gold-3);border-top-width:8px"></i>Bolsillo dorado (50 – 61.8&#8239;%)</span></div>
+      <p class="src" id="tradeSrc">Fuente: S&amp;P Dow Jones Indices, vía FRED (Banco de la Reserva Federal de St. Louis). Cierres diarios del Dow Jones Industrial Average.</p>
+    </div>
+    <div class="txt">
+      <h3>Cómo se usa</h3>
+      <p>Un trader marca un tramo completo de subida, del mínimo al máximo. La herramienta divide esa distancia en proporciones fijas y dibuja una línea en cada una. La idea es que, si el precio corrige, puede <strong>frenar y rebotar</strong> cerca de esas líneas antes de seguir subiendo.</p>
+      <p>La zona entre 50&#8239;% y 61.8&#8239;% se llama el <strong>bolsillo dorado</strong>, y muchos la vigilan para comprar en la corrección. Si el precio atraviesa 78.6&#8239;%, se suele leer como señal de que el tramo terminó. Las extensiones (127.2&#8239;% y 161.8&#8239;%) se usan como objetivos si la subida continúa.</p>
+      <h3>Un caso real</h3>
+      <p>El Dow Jones tocó mínimo el <strong>27 de octubre de 2023</strong> (32,418 puntos) y subió hasta el <strong>4 de diciembre de 2024</strong> (45,014). Con el anuncio de aranceles de abril de 2025 se desplomó hasta el <strong>8 de abril</strong> (37,646): una corrección del 58.5&#8239;%, dentro del bolsillo dorado. De ahí rebotó, y en agosto de 2025 ya marcaba un nuevo máximo.</p>
+      <p>Parece la herramienta funcionando de libro. Pero haz una prueba: mueve el círculo de inicio a otro mínimo de 2023 o 2024. El mismo rebote de abril cae en otro nivel. <strong>Los niveles dependen de dónde decides que empieza el tramo</strong>, y esa decisión se toma casi siempre después de ver la gráfica.</p>
+      <h3>De dónde salen los números</h3>
+      <table class="levels">
+        <tr><td>23.6&#8239;%</td><td>1/φ³</td><td>φ elevado a la −3</td></tr>
+        <tr><td>38.2&#8239;%</td><td>1/φ²</td><td>el complemento de 61.8: suman 100&#8239;% porque 1/φ + 1/φ² = 1</td></tr>
+        <tr><td>50&#8239;%</td><td>—</td><td>no viene de Fibonacci; es la «mitad» de la teoría de Dow</td></tr>
+        <tr><td>61.8&#8239;%</td><td>1/φ</td><td>el corte de Euclides, la proporción que da nombre a todo</td></tr>
+        <tr><td>78.6&#8239;%</td><td>√(1/φ)</td><td>raíz cuadrada de 0.618</td></tr>
+        <tr><td>161.8&#8239;%</td><td>φ</td><td>el número mismo, como objetivo de extensión</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">Prueba de honestidad</p><p class="viz-sub">Hasta dónde corrigen los tramos de un mercado sin memoria</p></div>
+        <button class="btn" type="button" id="simBtn">↻ Simular otra vez</button>
+      </div>
+      <div class="chart"><canvas id="cvHist" aria-label="Histograma de la profundidad de los retrocesos en un paseo aleatorio, con las líneas de Fibonacci superpuestas."></canvas><div class="tip" id="tipHist"></div></div>
+      <div class="stat-row" id="simStats"></div>
+      <p class="disclaimer" id="simNote"></p>
+    </div>
+    <div class="txt">
+      <h3>¿Funcionan?</h3>
+      <p class="lead">Un caso que funciona no prueba nada. Si el 61.8&#8239;% tuviera algo especial, los precios deberían frenar ahí más seguido que en cualquier otro nivel.</p>
+      <p>En la gráfica hay miles de tramos de un <strong>paseo aleatorio</strong>: un precio que sube o baja al azar, sin memoria y sin nadie mirando gráficas. Cada barra cuenta cuántas correcciones terminaron a esa profundidad.</p>
+      <p>No hay picos en 38.2 ni en 61.8. Un nivel cualquiera, como 55&#8239;% o 70&#8239;%, «atrapa» tantas correcciones como el dorado. En azar puro, los niveles de Fibonacci no tienen ningún poder especial, y aun así el azar produce casos tan limpios como el del Dow.</p>
+      <p>Entonces, ¿por qué los usan tantos? En un mercado real sí puede haber efecto, pero por otra razón: <strong>millones de personas miran las mismas líneas</strong> y ponen órdenes en ellas. Si el nivel funciona, es una profecía que se cumple a sí misma, no una ley de la naturaleza. Los estudios que han buscado un efecto estadístico de estos niveles encuentran, en el mejor de los casos, poco.</p>
+      <p class="note">Úsalos como un lenguaje compartido, junto con soportes, volumen y gestión de riesgo, no como una brújula. Esta sección es educativa y no es una recomendación de inversión.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-mercados">
+  <span class="k">∑ La matemática · 06</span>
+  <h2 id="sheetTitle">Los niveles, uno por uno</h2>
+  <h3>1. Dónde se dibuja cada línea</h3>
+  <p>Si el tramo va de un precio inicial <math><mi>S</mi></math> a un precio final <math><mi>E</mi></math>, el nivel de retroceso <math><mi>r</mi></math> está en</p>
+  <div class="eq"><math display="block"><mi>P</mi><mo stretchy="false">(</mo><mi>r</mi><mo stretchy="false">)</mo><mo>=</mo><mi>E</mi><mo>−</mo><mi>r</mi><mspace width="0.15em"/><mo stretchy="false">(</mo><mi>E</mi><mo>−</mo><mi>S</mi><mo stretchy="false">)</mo></math></div>
+  <p>y las extensiones, más allá del final, en <math><mi>S</mi><mo>+</mo><mi>r</mi><mspace width="0.15em"/><mo stretchy="false">(</mo><mi>E</mi><mo>−</mo><mi>S</mi><mo stretchy="false">)</mo></math> con <math><mi>r</mi><mo>&gt;</mo><mn>1</mn></math>. Para el Dow: <math><mi>S</mi><mo>=</mo><mn>32,418</mn></math>, <math><mi>E</mi><mo>=</mo><mn>45,014</mn></math>, y el nivel de 61.8&#8239;% queda en 37,229. El cierre del 8 de abril de 2025 fue 37,646.</p>
+  <h3>2. Todas son potencias de φ</h3>
+  <p>De <math><msup><mi>φ</mi><mn>2</mn></msup><mo>=</mo><mi>φ</mi><mo>+</mo><mn>1</mn></math>, dividiendo entre <math><msup><mi>φ</mi><mn>2</mn></msup></math>:</p>
+  <div class="eq"><math display="block"><mn>1</mn><mo>=</mo><mfrac><mn>1</mn><mi>φ</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><msup><mi>φ</mi><mn>2</mn></msup></mfrac><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><mn>0.618</mn><mo>+</mo><mn>0.382</mn><mo>=</mo><mn>1</mn></math></div>
+  <div class="eq"><math display="block"><mfrac><mn>1</mn><msup><mi>φ</mi><mn>3</mn></msup></mfrac><mo>≈</mo><mn>0.236</mn><mspace width="1.4em"/><msqrt><mfrac><mn>1</mn><mi>φ</mi></mfrac></msqrt><mo>≈</mo><mn>0.786</mn><mspace width="1.4em"/><msqrt><mi>φ</mi></msqrt><mo>≈</mo><mn>1.272</mn><mspace width="1.4em"/><mi>φ</mi><mo>≈</mo><mn>1.618</mn></math></div>
+  <h3>3. Cómo se hizo la prueba de honestidad</h3>
+  <p>El precio simulado es un paseo aleatorio en logaritmos: cada día cambia un porcentaje elegido al azar de una distribución normal con media cero y desviación de 1&#8239;%. No hay tendencia ni memoria.</p>
+  <p>Para encontrar los tramos se usa un <em>zigzag</em>: se marca un máximo o mínimo cada vez que el precio se aleja 5&#8239;% del extremo anterior. Para cada par de tramos consecutivos, la profundidad del retroceso es</p>
+  <div class="eq"><math display="block"><mtext>retroceso</mtext><mo>=</mo><mfrac><mrow><mo stretchy="false">|</mo><msub><mi>P</mi><mn>2</mn></msub><mo>−</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="false">|</mo></mrow><mrow><mo stretchy="false">|</mo><msub><mi>P</mi><mn>1</mn></msub><mo>−</mo><msub><mi>P</mi><mn>0</mn></msub><mo stretchy="false">|</mo></mrow></mfrac></math></div>
+  <p>Las tarjetas comparan cuántas correcciones terminan a ±2.5 puntos de 61.8&#8239;% contra dos niveles arbitrarios del mismo ancho. Sin un pico propio, no hay evidencia de que el nivel importe.</p>
+</template>
+
+<!-- ======================= 07 · PARES ======================= -->
+<template id="tpl-pares">
+  <div class="v-intro">
+    <span class="num">07 · φ ENTRE SUS PARES</span>
+    <h2>El número más irracional</h2>
+    <p>Todo número irracional se puede escribir como una fracción continua: un entero, más uno entre otro entero, más uno entre otro… La lista de esos enteros es como su huella digital. La de φ es la más simple posible, y eso la vuelve única.</p>
+  </div>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">Huellas digitales</p><p class="viz-sub">Los enteros de cada fracción continua, después del primero</p></div></div>
+      <div class="chart"><canvas id="cvCF" class="pan" aria-label="Términos de las fracciones continuas de φ, raíz de 2, e y pi."></canvas><div class="tip" id="tipCF"></div></div>
+    </div>
+    <div class="txt">
+      <p class="lead">φ = [1; 1, 1, 1, 1, …]. Unos, para siempre.</p>
+      <p>La de √2 repite doses; la de e sigue un patrón elegante (1, 2, 1, 1, 4, 1, 1, 6…). La de π parece caótica: 7, 15, 1, <strong>292</strong>, 1…</p>
+      <p>Un número grande en la huella es un atajo: significa que cortar ahí da una fracción excelente. Por eso 355/113 aproxima π con seis decimales correctos: justo antes viene el 292. φ no tiene atajos. Sus mejores fracciones son los cocientes de Fibonacci, y mejoran lo más despacio posible.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">Qué tan buena es cada fracción</p><p class="viz-sub">Más alto = mejor aproximación · escala logarítmica</p></div>
+        <div class="seg" role="group" aria-label="Comparar con">
+          <button type="button" data-cmp="pi" aria-pressed="true">π</button>
+          <button type="button" data-cmp="e" aria-pressed="false">e</button>
+          <button type="button" data-cmp="r2" aria-pressed="false">√2</button>
+        </div>
+      </div>
+      <div class="chart"><canvas id="cvApprox" aria-label="Error escalado de las mejores fracciones de φ comparado con otro número."></canvas><div class="tip" id="tipApprox"></div></div>
+      <div class="legend"><span><i style="border-color:var(--gold)"></i>φ</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i><span id="cmpName">π</span></span></div>
+    </div>
+    <div class="txt">
+      <h3>El teorema de Hurwitz</h3>
+      <p>Para cada fracción p/q medimos qué tan bien atina, corrigiendo por el tamaño del denominador: uno entre el error multiplicado por q². Así se comparan con justicia fracciones chicas y grandes.</p>
+      <p>π tiene un pico enorme en 355/113: es el atajo que le regala el 292 de su huella. e tiene picos que crecen poco a poco. Ambos tienen también fracciones mediocres, pero de vez en cuando les sale una excelente. Las de φ se quedan pegadas a <strong>√5 ≈ 2.24</strong> para siempre: nunca dan un atajo.</p>
+      <p>Adolf Hurwitz demostró en 1891 que todo número irracional tiene infinitas fracciones al menos así de buenas, y que el límite √5 no se puede subir: φ lo alcanza y nunca lo supera de manera significativa. <strong>Ningún número resiste mejor a las fracciones.</strong> Ese «máximamente irracional» es lo que lo hace útil para el girasol: un ángulo que nunca se parece a una fracción.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head">
+        <div><p class="viz-title">Las razones metálicas</p><p class="viz-sub">Quita n cuadrados y lo que sobra tiene la misma forma</p></div>
+        <div class="seg" role="group" aria-label="n" id="metSeg"></div>
+      </div>
+      <div class="chart"><canvas id="cvMetal" class="pan" aria-label="Rectángulo metálico dividido en n cuadrados y un rectángulo semejante."></canvas></div>
+      <div class="readout" style="margin-top:10px"><span class="big" id="metVal"></span><span class="lbl" id="metLbl"></span></div>
+    </div>
+    <div class="txt">
+      <h3>φ tiene familia</h3>
+      <p>Al rectángulo áureo le quitas un cuadrado y queda otro rectángulo áureo. Si le quitas dos cuadrados y queda uno de la misma forma, tienes la <strong>razón de plata</strong>, 1 + √2 ≈ 2.414. Con tres, la de bronce, ≈ 3.303. Cada una nace de una sucesión que multiplica por n al término anterior antes de sumar.</p>
+      <div class="cousins">
+        <div class="cousin"><span class="r">→ φ</span><b>Lucas</b><p>La misma regla con semillas 2 y 1: <code>2, 1, 3, 4, 7, 11, 18, 29…</code> Su cociente también tiende a φ.</p></div>
+        <div class="cousin"><span class="r">→ 1.8393</span><b>Tribonacci</b><p>Suma los tres anteriores: <code>1, 1, 2, 4, 7, 13, 24, 44…</code></p></div>
+        <div class="cousin"><span class="r">→ 1.3247</span><b>Padovan</b><p>Salta uno: P(n) = P(n−2) + P(n−3): <code>1, 1, 1, 2, 2, 3, 4, 5, 7, 9…</code> Su cociente es el número plástico.</p></div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<template id="math-pares">
+  <span class="k">∑ La matemática · 07</span>
+  <h2 id="sheetTitle">Fracciones continuas y Hurwitz</h2>
+  <h3>1. Fracción continua</h3>
+  <div class="eq"><math display="block"><mi>x</mi><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><mfrac><mn>1</mn><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><mfrac><mn>1</mn><mrow><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mo>⋯</mo></mrow></mfrac></mrow></mfrac><mo>=</mo><mo stretchy="false">[</mo><msub><mi>a</mi><mn>0</mn></msub><mo>;</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo stretchy="false">]</mo></math></div>
+  <p>Las convergentes <math><msub><mi>p</mi><mi>k</mi></msub><mo>/</mo><msub><mi>q</mi><mi>k</mi></msub></math> cumplen <math><msub><mi>q</mi><mi>k</mi></msub><mo>=</mo><msub><mi>a</mi><mi>k</mi></msub><msub><mi>q</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>q</mi><mrow><mi>k</mi><mo>−</mo><mn>2</mn></mrow></msub></math>. Con todos los <math><msub><mi>a</mi><mi>k</mi></msub><mo>=</mo><mn>1</mn></math>, eso es la regla de Fibonacci: los denominadores crecen lo más lento posible.</p>
+  <h3>2. El error</h3>
+  <div class="eq"><math display="block"><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mfrac><msub><mi>p</mi><mi>k</mi></msub><msub><mi>q</mi><mi>k</mi></msub></mfrac><mo>|</mo></mrow><mo>≈</mo><mfrac><mn>1</mn><mrow><msub><mi>a</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.15em"/><msubsup><mi>q</mi><mi>k</mi><mn>2</mn></msubsup></mrow></mfrac></math></div>
+  <p>Un <math><msub><mi>a</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> grande hace pequeño el error: el 292 de π explica la precisión de 355/113.</p>
+  <h3>3. Hurwitz (1891)</h3>
+  <p>Todo irracional <math><mi>x</mi></math> tiene infinitas fracciones con</p>
+  <div class="eq"><math display="block"><mrow><mo>|</mo><mi>x</mi><mo>−</mo><mfrac><mi>p</mi><mi>q</mi></mfrac><mo>|</mo></mrow><mo>&lt;</mo><mfrac><mn>1</mn><mrow><msqrt><mn>5</mn></msqrt><mspace width="0.15em"/><msup><mi>q</mi><mn>2</mn></msup></mrow></mfrac></math></div>
+  <p>y la constante <math><msqrt><mn>5</mn></msqrt></math> no se puede mejorar: φ (y los números equivalentes a él) la saturan. Por eso sus errores escalados se quedan en <math><mn>1</mn><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>≈</mo><mn>0.447</mn></math>.</p>
+  <h3>4. Razones metálicas</h3>
+  <div class="eq"><math display="block"><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mi>n</mi><mi>x</mi><mo>+</mo><mn>1</mn><mspace width="1em"/><mo stretchy="false">⟹</mo><mspace width="1em"/><msub><mi>σ</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><mi>n</mi><mo>+</mo><msqrt><mrow><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mn>4</mn></mrow></msqrt></mrow><mn>2</mn></mfrac><mo>=</mo><mo stretchy="false">[</mo><mi>n</mi><mo>;</mo><mi>n</mi><mo>,</mo><mi>n</mi><mo>,</mo><mo>…</mo><mo stretchy="false">]</mo></math></div>
+  <p>Quitar <math><mi>n</mi></math> cuadrados de un rectángulo <math><msub><mi>σ</mi><mi>n</mi></msub><mo>×</mo><mn>1</mn></math> deja uno de <math><mn>1</mn><mo>×</mo><mo stretchy="false">(</mo><msub><mi>σ</mi><mi>n</mi></msub><mo>−</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mo>×</mo><mn>1</mn><mo>/</mo><msub><mi>σ</mi><mi>n</mi></msub></math>: la misma forma.</p>
+  <h3>5. Los primos de Fibonacci</h3>
+  <p>Lucas: <math><msub><mi>L</mi><mi>n</mi></msub><mo>=</mo><msup><mi>φ</mi><mi>n</mi></msup><mo>+</mo><msup><mi>ψ</mi><mi>n</mi></msup></math>. Tribonacci: raíz real de <math><msup><mi>x</mi><mn>3</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>. Número plástico: raíz real de <math><msup><mi>x</mi><mn>3</mn></msup><mo>=</mo><mi>x</mi><mo>+</mo><mn>1</mn></math>.</p>
+</template>
+
+<!-- ======================= 08 · TU TURNO ======================= -->
+<template id="tpl-turno">
+  <div class="v-intro">
+    <span class="num">08 · TU TURNO</span>
+    <h2>Construye tu propia sucesión</h2>
+    <p>Elige los dos números iniciales que quieras, positivos, negativos o con decimales. Aplica la misma regla. Pero antes de generar nada, haz tu apuesta.</p>
+  </div>
+  <section class="block">
+    <div class="viz">
+      <div class="viz-head"><div><p class="viz-title">Tus semillas</p><p class="viz-sub">La regla es la misma: sumar los dos anteriores</p></div></div>
+      <div class="field">
+        <label>primero <input class="num-in" id="ta" type="number" inputmode="decimal" step="any" value="2"></label>
+        <label>segundo <input class="num-in" id="tb" type="number" inputmode="decimal" step="any" value="7"></label>
+      </div>
+      <div class="presets" id="tPresets">
+        <button type="button" data-a="2" data-b="7">2 y 7</button>
+        <button type="button" data-a="100" data-b="-3">100 y −3</button>
+        <button type="button" data-a="-5" data-b="0.5">−5 y 0.5</button>
+        <button type="button" data-a="1" data-b="-0.618">1 y −0.618</button>
+      </div>
+      <div id="turnOut" hidden>
+        <div class="chips-row" id="tChips" style="margin-top:12px"></div>
+        <div class="chart" style="margin-top:14px"><canvas id="cvTurn" aria-label="Cociente entre términos consecutivos de tu sucesión."></canvas><div class="tip" id="tipTurn"></div></div>
+        <div class="verdict" id="tVerdict"><b></b><p></p></div>
+      </div>
+    </div>
+    <div class="txt">
+      <h3>¿Qué crees que pasará con el cociente entre términos consecutivos?</h3>
+      <div class="opts" id="tOpts">
+        <button class="opt" type="button" data-p="0">Crecerá sin límite</button>
+        <button class="opt" type="button" data-p="1">Se acercará a 1.618…</button>
+        <button class="opt" type="button" data-p="2">Depende de los números iniciales</button>
+        <button class="opt" type="button" data-p="3">Oscilará sin estabilizarse</button>
+      </div>
+      <button class="btn" type="button" id="tGen" disabled>Generar y descubrir →</button>
+      <p class="note">Prueba también semillas raras, como 1 y −0.618. Vas a ver un caso límite muy interesante.</p>
+    </div>
+  </section>
+</template>
+
+<template id="math-turno">
+  <span class="k">∑ La matemática · 08</span>
+  <h2 id="sheetTitle">Por qué casi todo termina en φ</h2>
+  <h3>1. La solución general</h3>
+  <p>Cualquier sucesión con <math><msub><mi>a</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></math> se escribe como</p>
+  <div class="eq"><math display="block"><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mi>A</mi><mspace width="0.1em"/><msup><mi>φ</mi><mi>n</mi></msup><mo>+</mo><mi>B</mi><mspace width="0.1em"/><msup><mi>ψ</mi><mi>n</mi></msup></math></div>
+  <p>con <math><mi>A</mi></math> y <math><mi>B</mi></math> fijados por las semillas. Como <math><mo>|</mo><mi>ψ</mi><mo>|</mo><mo>&lt;</mo><mn>1</mn><mo>&lt;</mo><mi>φ</mi></math>, el término de ψ se apaga y el cociente tiende a φ, siempre que <math><mi>A</mi><mo>≠</mo><mn>0</mn></math>.</p>
+  <h3>2. El único escape</h3>
+  <p><math><mi>A</mi><mo>=</mo><mn>0</mn></math> exige que la segunda semilla sea exactamente ψ veces la primera: <math><mi>b</mi><mo>=</mo><mi>ψ</mi><mspace width="0.1em"/><mi>a</mi></math>. Como ψ es irracional, eso no pasa con semillas enteras ni con decimales finitos (salvo 0 y 0). Pero si te acercas, <math><mi>A</mi></math> es diminuto y el término de ψ domina durante muchos pasos: el cociente oscila cerca de ψ ≈ −0.618 antes de rendirse a φ.</p>
+  <h3>3. La velocidad sí depende de las semillas</h3>
+  <div class="eq"><math display="block"><mfrac><msub><mi>a</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>a</mi><mi>n</mi></msub></mfrac><mo>−</mo><mi>φ</mi><mo>≈</mo><mfrac><mi>B</mi><mi>A</mi></mfrac><mspace width="0.15em"/><mo stretchy="false">(</mo><mi>ψ</mi><mo>−</mo><mi>φ</mi><mo stretchy="false">)</mo><msup><mrow><mo>(</mo><mfrac><mi>ψ</mi><mi>φ</mi></mfrac><mo>)</mo></mrow><mi>n</mi></msup></math></div>
+  <p>El destino es el mismo; cuánto tarda depende de <math><mo>|</mo><mi>B</mi><mo>/</mo><mi>A</mi><mo>|</mo></math>.</p>
+</template>
+
+<!-- ======================= 09 · GABINETE ======================= -->
+<template id="tpl-gabinete">
+  <div class="v-intro">
+    <span class="num">09 · GABINETE MATEMÁTICO</span>
+    <h2>Identidades para quien quiera demostrar</h2>
+    <p>Cada tarjeta es un resultado clásico con su calculadora. Cambia los números y comprueba que la identidad nunca falla. Las demostraciones están en ∑ La matemática.</p>
+  </div>
+  <div class="gcards">
+    <div class="gcard"><span class="k">Binet</span><h3>Una fórmula con irracionales que da enteros</h3><p>φⁿ/√5 siempre cae a menos de media unidad de Fₙ. Redondear basta.</p>
+      <div class="field"><label>n <input class="num-in sm" id="gBinet" type="number" min="1" max="70" value="30"></label></div><div class="gout" id="oBinet"></div></div>
+    <div class="gcard"><span class="k">Cassini</span><h3>Un producto que siempre falla por uno</h3><p>El vecino de cada lado multiplicado, menos el cuadrado del centro, da +1 o −1.</p>
+      <div class="field"><label>n <input class="num-in sm" id="gCass" type="number" min="2" max="70" value="10"></label></div><div class="gout" id="oCass"></div></div>
+    <div class="gcard"><span class="k">Suma de cuadrados</span><h3>El rectángulo de la espiral</h3><p>La suma de los primeros cuadrados es el producto de los dos últimos términos.</p>
+      <div class="field"><label>n <input class="num-in sm" id="gSum" type="number" min="1" max="35" value="8"></label></div><div class="gout" id="oSum"></div></div>
+    <div class="gcard"><span class="k">Máximo común divisor</span><h3>El MCD de dos Fibonacci es otro Fibonacci</h3><p>Y su posición es el MCD de las posiciones.</p>
+      <div class="field"><label>m <input class="num-in sm" id="gM" type="number" min="1" max="70" value="12"></label><label>n <input class="num-in sm" id="gN" type="number" min="1" max="70" value="18"></label></div><div class="gout" id="oGcd"></div></div>
+    <div class="gcard"><span class="k">Lamé, 1844</span><h3>El peor caso de Euclides</h3><p>El algoritmo de Euclides tarda más con dos Fibonacci seguidos que con cualquier otro par de ese tamaño.</p>
+      <div class="field"><label>k <input class="num-in sm" id="gLame" type="number" min="3" max="40" value="12"></label></div><div class="gout" id="oLame"></div></div>
+    <div class="gcard"><span class="k">Zeckendorf</span><h3>Todo entero, como suma de Fibonacci</h3><p>De forma única, sin usar dos consecutivos.</p>
+      <div class="field"><label>número <input class="num-in" id="gZeck" type="number" min="1" max="1000000000" value="2026"></label></div><div class="gout" id="oZeck"></div><div class="zbits" id="zBits"></div></div>
+    <div class="gcard"><span class="k">Pisano</span><h3>Los últimos dígitos se repiten</h3><p>Fibonacci módulo m es periódico. Une los restos en orden alrededor de un reloj de m horas.</p>
+      <div class="rng"><label for="gPis">m</label><input type="range" id="gPis" min="2" max="16" step="1" value="10"><output id="gPisOut">10</output></div>
+      <div class="chart"><canvas id="cvPis" class="pan" aria-label="Reloj modular de la sucesión de Fibonacci."></canvas></div><div class="gout" id="oPis"></div></div>
+    <div class="gcard"><span class="k">Truco práctico</span><h3>De millas a kilómetros</h3><p>Una milla son 1.609 km, casi φ. Para convertir, salta al siguiente Fibonacci (descomponiendo con Zeckendorf si hace falta).</p>
+      <div class="field"><label>millas <input class="num-in" id="gMi" type="number" min="1" max="100000" value="50"></label></div><div class="gout" id="oMi"></div></div>
+    <div class="gcard"><span class="k">1/89</span><h3>La sucesión escondida en una fracción</h3><p>Escribe cada Fibonacci un lugar decimal más a la derecha y suma. El resultado es 1/89.</p>
+      <div class="cols89" id="o89"></div></div>
+  </div>
+</template>
+
+<template id="math-gabinete">
+  <span class="k">∑ La matemática · 09</span>
+  <h2 id="sheetTitle">Las demostraciones</h2>
+  <h3>Binet</h3>
+  <p>Como <math><mo>|</mo><msup><mi>ψ</mi><mi>n</mi></msup><mo>/</mo><msqrt><mn>5</mn></msqrt><mo>|</mo><mo>&lt;</mo><mn>1</mn><mo>/</mo><mn>2</mn></math> para todo <math><mi>n</mi><mo>≥</mo><mn>1</mn></math>, de <math><msub><mi>F</mi><mi>n</mi></msub><mo>=</mo><mo stretchy="false">(</mo><msup><mi>φ</mi><mi>n</mi></msup><mo>−</mo><msup><mi>ψ</mi><mi>n</mi></msup><mo stretchy="false">)</mo><mo>/</mo><msqrt><mn>5</mn></msqrt></math> sale que <math><msub><mi>F</mi><mi>n</mi></msub></math> es el entero más cercano a <math><msup><mi>φ</mi><mi>n</mi></msup><mo>/</mo><msqrt><mn>5</mn></msqrt></math>.</p>
+  <h3>Cassini, con una matriz</h3>
+  <div class="eq"><math display="block"><msup><mrow><mo>(</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>0</mn></mtd></mtr></mtable><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><mrow><mo>(</mo><mtable><mtr><mtd><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></mtd><mtd><msub><mi>F</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd><msub><mi>F</mi><mi>n</mi></msub></mtd><mtd><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr></mtable><mo>)</mo></mrow></math></div>
+  <p>Tomando determinantes: <math><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>−</mo><msubsup><mi>F</mi><mi>n</mi><mn>2</mn></msubsup><mo>=</mo><msup><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mi>n</mi></msup></math>.</p>
+  <h3>Máximo común divisor</h3>
+  <p>De la misma potencia de matrices sale <math><msub><mi>F</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msub><mo>=</mo><msub><mi>F</mi><mi>m</mi></msub><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><msub><mi>F</mi><mi>n</mi></msub></math>. Con ella, el algoritmo de Euclides sobre <math><mo stretchy="false">(</mo><msub><mi>F</mi><mi>m</mi></msub><mo>,</mo><msub><mi>F</mi><mi>n</mi></msub><mo stretchy="false">)</mo></math> imita al de <math><mo stretchy="false">(</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false">)</mo></math>, y como términos consecutivos no comparten factores, <math><mi>gcd</mi><mo stretchy="false">(</mo><msub><mi>F</mi><mi>m</mi></msub><mo>,</mo><msub><mi>F</mi><mi>n</mi></msub><mo stretchy="false">)</mo><mo>=</mo><msub><mi>F</mi><mrow><mi>gcd</mi><mo stretchy="false">(</mo><mi>m</mi><mo>,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></msub></math>.</p>
+  <h3>Lamé</h3>
+  <p>Dividir <math><msub><mi>F</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> entre <math><msub><mi>F</mi><mi>k</mi></msub></math> da cociente 1 y residuo <math><msub><mi>F</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></math>: cada paso baja un solo lugar en la sucesión. Ningún par avanza más despacio, porque cocientes mayores que 1 hacen caer el residuo más rápido.</p>
+  <h3>Zeckendorf</h3>
+  <p>El método voraz (restar el mayor Fibonacci que quepa) nunca usa dos consecutivos: si quedara espacio para <math><msub><mi>F</mi><mi>k</mi></msub></math> y <math><msub><mi>F</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></math>, entonces cabría <math><msub><mi>F</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> y lo habría elegido antes.</p>
+  <h3>Pisano</h3>
+  <p>Módulo <math><mi>m</mi></math> solo hay <math><msup><mi>m</mi><mn>2</mn></msup></math> pares posibles de residuos consecutivos, así que algún par se repite. Como la regla se puede correr hacia atrás (<math><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>−</mo><msub><mi>F</mi><mi>n</mi></msub></math>), el ciclo vuelve exactamente al inicio (0, 1).</p>
+  <h3>1/89</h3>
+  <div class="eq"><math display="block"><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></munderover><msub><mi>F</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup><mo>=</mo><mfrac><mi>x</mi><mrow><mn>1</mn><mo>−</mo><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mspace width="1em"/><mover><mo stretchy="false">⟹</mo><mrow><mi>x</mi><mo>=</mo><mn>1</mn><mo>/</mo><mn>10</mn></mrow></mover><mspace width="1em"/><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></munderover><mfrac><msub><mi>F</mi><mi>n</mi></msub><msup><mn>10</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>89</mn></mfrac></math></div>
+  <h3>Millas y kilómetros</h3>
+  <p>Saltar al siguiente Fibonacci multiplica casi por φ ≈ 1.618, y una milla son 1.609 km. El error es menor que 1&#8239;% para distancias grandes. Para números que no son Fibonacci, se descomponen con Zeckendorf y se salta cada pieza.</p>
+</template>
+
+
+<script>
+const DJIA={start:"2023-07-03",d:[0,2,3,4,7,8,9,10,11,14,15,16,17,18,21,22,23,24,25,28,29,30,31,32,35,36,37,38,39,42,43,44,45,46,49,50,51,52,53,56,57,58,59,60,64,65,66,67,70,71,72,73,74,77,78,79,80,81,84,85,86,87,88,91,92,93,94,95,98,99,100,101,102,105,106,107,108,109,112,113,114,115,116,119,120,121,122,123,126,127,128,129,130,133,134,135,136,137,140,141,142,144,147,148,149,150,151,154,155,156,157,158,161,162,163,164,165,168,169,170,171,172,176,177,178,179,183,184,185,186,189,190,191,192,193,197,198,199,200,203,204,205,206,207,210,211,212,213,214,217,218,219,220,221,224,225,226,227,228,232,233,234,235,238,239,240,241,242,245,246,247,248,249,252,253,254,255,256,259,260,261,262,263,266,267,268,269,273,274,275,276,277,280,281,282,283,284,287,288,289,290,291,294,295,296,297,298,301,302,303,304,305,308,309,310,311,312,315,316,317,318,319,322,323,324,325,326,330,331,332,333,336,337,338,339,340,343,344,345,346,347,350,351,353,354,357,358,359,360,361,364,365,366,368,371,372,373,374,375,378,379,380,381,382,385,386,387,388,389,392,393,394,395,396,399,400,401,402,403,406,407,408,409,410,413,414,415,416,417,420,421,422,423,424,428,429,430,431,434,435,436,437,438,441,442,443,444,445,448,449,450,451,452,455,456,457,458,459,462,463,464,465,466,469,470,471,472,473,476,477,478,479,480,483,484,485,486,487,490,491,492,493,494,497,498,499,500,501,504,505,506,507,508,511,512,513,515,518,519,520,521,522,525,526,527,528,529,532,533,534,535,536,539,540,542,543,546,547,549,550,553,554,555,557,560,561,562,563,564,568,569,570,571,574,575,576,577,578,581,582,583,584,585,588,589,590,591,592,596,597,598,599,602,603,604,605,606,609,610,611,612,613,616,617,618,619,620,623,624,625,626,627,630,631,632,633,634,637,638,639,640,641,644,645,646,647,648,651,652,653,654,658,659,660,661,662,665,666,667,668,669,672,673,674,675,676,679,680,681,682,683,686,687,688,689,690,694,695,696,697,700,701,702,703,704,707,708,709,710,711,714,715,716,718,721,722,723,724,725,728,729,730,731,735,736,737,738,739,742,743,744,745,746,749,750,751,752,753,756,757,758,759,760,763,764,765,766,767,770,771,772,773,774,777,778,779,780,781,784,785,786,787,788,792,793,794,795,798,799,800,801,802,805,806,807,808,809,812,813,814,815,816,819,820,821,822,823,826,827,828,829,830,833,834,835,836,837,840,841,842,843,844,847,848,849,850,851],v:[34418,34289,33922,33735,33944,34261,34347,34395,34509,34585,34952,35061,35225,35228,35411,35438,35520,35283,35459,35560,35631,35283,35216,35066,35473,35314,35123,35176,35281,35308,34946,34766,34475,34501,34464,34289,34473,34099,34347,34560,34853,34890,34722,34838,34642,34443,34501,34577,34664,34646,34576,34907,34618,34624,34518,34441,34070,33964,34007,33619,33550,33666,33508,33433,33002,33130,33120,33408,33605,33739,33805,33631,33670,33985,33998,33665,33414,33127,32936,33141,33036,32784,32418,32929,33053,33275,33839,34061,34096,34153,34112,33892,34283,34338,34828,34991,34945,34947,35151,35088,35273,35390,35333,35417,35430,35951,36246,36204,36125,36054,36117,36248,36405,36578,37090,37248,37305,37306,37558,37082,37404,37386,37545,37657,37710,37690,37715,37430,37440,37466,37683,37525,37696,37711,37593,37361,37267,37469,37864,38002,37905,37806,38049,38109,38333,38467,38150,38520,38654,38380,38521,38677,38726,38672,38797,38273,38424,38773,38628,38564,38612,39069,39132,39069,38972,38949,38996,39087,38990,38585,38661,38791,38723,38770,39005,39043,38906,38715,38790,39111,39512,39781,39476,39314,39282,39760,39807,39567,39170,39127,38597,38904,38893,38884,38462,38459,37983,37735,37799,37753,37775,37986,38240,38504,38461,38086,38240,38386,37816,37903,38226,38676,38852,38884,39056,39388,39513,39432,39558,39908,39869,40004,39807,39873,39671,39065,39070,38853,38442,38111,38686,38571,38711,38807,38886,38799,38868,38747,38712,38647,38589,38778,38835,39135,39150,39411,39112,39128,39164,39119,39170,39332,39308,39376,39345,39292,39721,39754,40001,40212,40954,41198,40665,40288,40415,40358,39854,39935,40589,40540,40743,40843,40348,39737,38703,38998,38763,39446,39498,39357,39766,40008,40563,40660,40897,40835,40890,40713,41175,41241,41250,41091,41335,41563,40937,40975,40756,40345,40830,40737,40862,41097,41394,41622,41606,41503,42025,42063,42125,42208,41915,42175,42313,42330,42157,42197,42012,42353,41954,42080,42512,42454,42864,43065,42740,43078,43239,43276,42932,42925,42515,42374,42114,42388,42233,42142,41763,42052,41795,42222,43730,43729,43989,44293,43911,43958,43751,43445,43390,43269,43408,43870,44297,44737,44860,44722,44911,44782,44706,45014,44766,44643,44402,44248,44149,43914,43828,43717,43450,42327,42342,42840,42907,43297,43326,42992,42574,42544,42392,42732,42707,42528,42635,41938,42297,42518,43222,43153,43488,44026,44157,44565,44424,44714,44850,44714,44882,44545,44422,44556,44873,44748,44303,44470,44594,44369,44711,44546,44556,44628,44177,43428,43461,43621,43433,43240,43841,43191,42521,43007,42579,42802,41912,41433,41351,40814,41488,41842,41581,41965,41953,41985,42583,42588,42455,42300,41584,42002,41990,42225,40546,38315,37966,37646,40608,39594,40213,40525,40369,39669,39142,38170,39187,39607,40093,40114,40228,40528,40669,40753,41317,41219,40829,41114,41368,41249,42410,42140,42051,42323,42655,42792,42677,41860,41859,41603,42344,42099,42216,42270,42305,42520,42428,42320,42763,42762,42867,42866,42968,42198,42515,42216,42172,42207,42582,43089,42982,43387,43819,44095,44495,44484,44829,44406,44241,44458,44651,44372,44460,44023,44255,44484,44342,44323,44502,45010,44694,44902,44838,44633,44461,44131,43589,44174,44112,44193,43969,44176,43975,44459,44922,44911,44946,44912,44922,44938,44786,45632,45282,45418,45565,45637,45545,45296,45271,45621,45401,45515,45711,45491,46108,45834,45883,45758,46018,46142,46315,46382,46293,46121,45947,46247,46316,46398,46441,46520,46758,46695,46603,46602,46358,45480,46068,46270,46253,45952,46191,46707,46925,46590,46735,47207,47545,47706,47632,47522,47563]};
+"use strict";
+(function(){
+const PHI=(1+Math.sqrt(5))/2, PSI=(1-Math.sqrt(5))/2, SQ5=Math.sqrt(5);
+const REDUCED=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const FIB=[0,1,1]; for(let i=3;i<=78;i++) FIB.push(FIB[i-1]+FIB[i-2]);   // FIB[1]=FIB[2]=1, exacto hasta 78
+const fmt=(v,d)=>v.toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d});
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+const sup=s=>String(s).replace('-','⁻').replace(/\d/g,c=>SUP[c]);
+const INK=a=>'rgba(237,231,217,'+a+')', GOLD=a=>'rgba(231,196,107,'+a+')';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function onInput(el,fn){ el.addEventListener('input',fn); }
+
+/* ---------------- secciones e índice ---------------- */
+const ICON={
+  regla:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="12" width="6" height="6" rx="1"/><rect x="11" y="12" width="6" height="6" rx="1"/><rect x="19" y="8" width="10" height="10" rx="1.4" stroke-opacity=".7"/></svg>',
+  numero:'φ',
+  espiral:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 16a1.6 1.6 0 0 1 1.6-1.6 2.6 2.6 0 0 1 2.6 2.6 4.2 4.2 0 0 1-4.2 4.2 6.8 6.8 0 0 1-6.8-6.8A11 11 0 0 1 18.2 3.4"/></svg>',
+  naturaleza:(()=>{let s='<svg viewBox="0 0 30 30">';for(let n=1;n<=60;n++){const r=1.75*Math.sqrt(n),t=n*2.39996;s+='<circle cx="'+(15+r*Math.cos(t)).toFixed(2)+'" cy="'+(15+r*Math.sin(t)).toFixed(2)+'" r="0.95" fill="currentColor" fill-opacity="'+(0.45+0.55*n/60).toFixed(2)+'"/>';}return s+'</svg>';})(),
+  mitos:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 10 15 4l11 6z"/><path d="M6 11v12M11 11v12M19 11v12M24 11v12M4 25h22"/></svg>',
+  mercados:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 6v18M12 9v13M18 4v17M24 8v18" stroke-opacity=".55"/><rect x="4.5" y="10" width="3" height="9" fill="currentColor" fill-opacity=".25"/><rect x="10.5" y="12" width="3" height="6"/><rect x="16.5" y="7" width="3" height="9" fill="currentColor" fill-opacity=".25"/><rect x="22.5" y="11" width="3" height="10"/></svg>',
+  pares:'<span style="font-size:17px;letter-spacing:.04em">π·e</span>',
+  turno:'<span style="font-size:19px">a+b</span>',
+  gabinete:'∑'
+};
+const SECTIONS=[
+  {id:'regla',num:'01',t:'La regla',d:'Cada número suma los dos anteriores. Conejos, escaleras, abejas y la poesía de la India antigua la obedecen.'},
+  {id:'numero',num:'02',t:'De la regla al número',d:'Divide cada término entre el anterior y aparece φ = 1.618… ¿Por qué ahí y no en otro lado?'},
+  {id:'espiral',num:'03',t:'La espiral',d:'Cuadrados que crecen y una curva que gira. Casi idénticas, nunca iguales: aquí se mide cuánto.'},
+  {id:'naturaleza',num:'04',t:'Donde vive de verdad',d:'Girasoles, piñas, pentágonos y cuasicristales: los lugares donde φ aparece sin trampa.'},
+  {id:'mitos',num:'05',t:'Donde la inventamos',d:'El Partenón, la Mona Lisa, el nautilus. Y una herramienta para que caces tus propios φ falsos.'},
+  {id:'mercados',num:'06',t:'En los mercados',d:'Los retrocesos de Fibonacci que usan los traders: de dónde salen, un caso real del Dow Jones y una prueba de honestidad.'},
+  {id:'pares',num:'07',t:'φ entre sus pares',d:'Frente a π, e y las razones de plata y bronce: por qué φ es el número «más irracional» de todos.'},
+  {id:'turno',num:'08',t:'Tu turno',d:'Elige dos números cualesquiera, haz tu apuesta y mira qué pasa con el cociente.'},
+  {id:'gabinete',num:'09',t:'Gabinete matemático',d:'Binet, Cassini, Zeckendorf, Pisano y el truco de millas a kilómetros. Para quien quiera demostrar.',extra:true}
+];
+const grid=$('#grid');
+SECTIONS.forEach(s=>{
+  const b=document.createElement('button'); b.type='button'; b.className='tile'+(s.extra?' extra':'');
+  b.innerHTML='<span class="ico" aria-hidden="true">'+ICON[s.id]+'</span><span><span class="num">'+s.num+'</span><h3></h3><p></p></span>';
+  b.querySelector('h3').textContent=s.t; b.querySelector('p').textContent=s.d;
+  b.addEventListener('click',()=>{location.hash='#/'+s.id;});
+  grid.appendChild(b);
+});
+
+/* ---------------- enrutado ---------------- */
+const INIT={};
+let cleanup=null;
+function route(){
+  const m=location.hash.match(/^#\/(\w+)/);
+  const s=m&&SECTIONS.find(x=>x.id===m[1]);
+  if(cleanup){ try{cleanup();}catch(e){} cleanup=null; }
+  if(!$('#sheet').hidden) closeSheet();
+  if(!s){
+    $('#view').hidden=true; $('#home').hidden=false; hero.start();
+    if(location.hash==='#indice') $('#indice').scrollIntoView();
+    return;
+  }
+  hero.stop();
+  $('#home').hidden=true; $('#view').hidden=false;
+  $('#vbarT').innerHTML='<b>'+s.num+'</b>'; $('#vbarT').appendChild(document.createTextNode(s.t));
+  document.title=s.t+' · El número más irracional';
+  const body=$('#viewBody'); body.innerHTML='';
+  body.appendChild(document.getElementById('tpl-'+s.id).content.cloneNode(true));
+  const i=SECTIONS.indexOf(s), prev=SECTIONS[i-1], next=SECTIONS[i+1];
+  const nav=document.createElement('nav'); nav.className='next';
+  if(prev){ const a=document.createElement('a'); a.className='pill'; a.href='#/'+prev.id; a.textContent='← '+prev.num+' · '+prev.t; nav.appendChild(a);} else nav.appendChild(document.createElement('span'));
+  if(next){ const a=document.createElement('a'); a.className='pill'; a.href='#/'+next.id; a.textContent=next.t+' · '+next.num+' →'; nav.appendChild(a);} else { const a=document.createElement('a'); a.className='pill'; a.href='#indice'; a.textContent='Volver al índice ↑'; nav.appendChild(a); }
+  body.appendChild(nav);
+  $('#mathBtn').dataset.sec=s.id;
+  window.scrollTo(0,0);
+  const c=INIT[s.id]&&INIT[s.id]();
+  if(c){
+    const onR=()=>c.resize&&c.resize();
+    let rt=0; const deb=()=>{ clearTimeout(rt); rt=setTimeout(onR,120); };
+    window.addEventListener('resize',deb);
+    cleanup=()=>{ window.removeEventListener('resize',deb); c.stop&&c.stop(); };
+  }
+}
+window.addEventListener('hashchange',route);
+
+/* ---------------- hoja de matemática ---------------- */
+let lastFocus=null;
+function openSheet(id){
+  const tpl=document.getElementById('math-'+id); if(!tpl) return;
+  lastFocus=document.activeElement;
+  const b=$('#sheetBody'); b.innerHTML=''; b.appendChild(tpl.content.cloneNode(true));
+  $('#sheet').hidden=false; document.body.style.overflow='hidden';
+  $('#sheet .sheet').scrollTop=0; $('#sheet .x').focus();
+}
+function closeSheet(){ $('#sheet').hidden=true; document.body.style.overflow=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+$('#mathBtn').addEventListener('click',e=>openSheet(e.currentTarget.dataset.sec));
+$('#sheet').addEventListener('click',e=>{ if(e.target.hasAttribute('data-close')) closeSheet(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#sheet').hidden) closeSheet(); });
+
+/* ---------------- utilidades de lienzo ---------------- */
+function fit(cv,h){
+  const dpr=Math.min(2,window.devicePixelRatio||1), w=cv.clientWidth||300;
+  cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h); return {ctx,w,h};
+}
+function chartH(cv,ratio,min,max){ return clamp(Math.round((cv.clientWidth||300)*ratio),min,max); }
+function tip(el,x,y,html,box){
+  el.innerHTML=html; el.classList.add('on');
+  const bw=el.offsetWidth, bh=el.offsetHeight;
+  let L=x+14, T=y-bh-12;
+  if(L+bw>box.w) L=x-bw-14; if(L<0) L=4; if(T<0) T=y+14;
+  el.style.left=L+'px'; el.style.top=T+'px';
+}
+function hideTip(el){ el&&el.classList.remove('on'); }
+function hline(ctx,x0,x1,y,color,dash){ ctx.setLineDash(dash||[]); ctx.strokeStyle=color; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke(); ctx.setLineDash([]); }
+function vline(ctx,x,y0,y1,color,dash){ ctx.setLineDash(dash||[]); ctx.strokeStyle=color; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,y0); ctx.lineTo(x,y1); ctx.stroke(); ctx.setLineDash([]); }
+function dot(ctx,x,y,r,fill,ring){ ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fillStyle=fill; ctx.fill(); if(ring!==false){ ctx.lineWidth=2; ctx.strokeStyle='#0d0f1c'; ctx.stroke(); } }
+function txt(ctx,s,x,y,o){ o=o||{}; ctx.font=(o.font||'12px '+(o.mono?css('--mono'):css('--sans'))); ctx.fillStyle=o.color||INK(.6); ctx.textAlign=o.align||'left'; ctx.textBaseline=o.base||'middle'; ctx.fillText(s,x,y); }
+function rbar(ctx,x,y,w,h,r,fill){ if(h<=0) return; r=Math.min(r,w/2,h); ctx.beginPath(); ctx.moveTo(x,y+h); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h); ctx.closePath(); ctx.fillStyle=fill; ctx.fill(); }
+function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function gauss(r){ let u=0,v=0; while(u===0)u=r(); while(v===0)v=r(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function pressGroup(btns,active){ btns.forEach(b=>b.setAttribute('aria-pressed',String(b===active))); }
+function animate(ms,fn,done){ if(REDUCED){ fn(1); done&&done(); return {stop(){}}; } const t0=performance.now(); let id=0, live=true; (function f(now){ if(!live) return; const k=Math.min(1,(now-t0)/ms); fn(k); if(k<1) id=requestAnimationFrame(f); else done&&done(); })(t0); return {stop(){ live=false; cancelAnimationFrame(id); }}; }
+
+/* ================= PORTADA: zoom infinito de la espiral áurea ================= */
+const hero=(function(){
+  const cv=$('#cvHero'), ctx=cv.getContext('2d');
+  const N=12, sq=[]; let R={x:0,y:0,w:Math.pow(PHI,N),h:Math.pow(PHI,N-1)};
+  for(let k=0;k<44;k++){
+    const d=k%4; let s,X,Y,cx,cy,rem;
+    if(d===0){s=R.h;X=R.x;Y=R.y;cx=R.x+s;cy=R.y;rem={x:R.x+s,y:R.y,w:R.w-s,h:R.h};}
+    else if(d===1){s=R.w;X=R.x;Y=R.y+R.h-s;cx=R.x;cy=R.y+R.h-s;rem={x:R.x,y:R.y,w:R.w,h:R.h-s};}
+    else if(d===2){s=R.h;X=R.x+R.w-s;Y=R.y;cx=R.x+R.w-s;cy=R.y+R.h;rem={x:R.x,y:R.y,w:R.w-s,h:R.h};}
+    else{s=R.w;X=R.x;Y=R.y;cx=R.x+s;cy=R.y+s;rem={x:R.x,y:R.y+s,w:R.w,h:R.h-s};}
+    sq.push({x:X,y:-(Y+s),s,cx,cy:-cy,a0:-(Math.PI-d*Math.PI/2),mx:X+s/2,my:-(Y+s/2)});
+    R=rem;
+  }
+  const P={x:R.x+R.w/2,y:-(R.y+R.h/2)};
+  const ang=o=>Math.atan2(o.my-P.y,o.mx-P.x);
+  let alpha=ang(sq[1])-ang(sq[0]); while(alpha>Math.PI)alpha-=2*Math.PI; while(alpha<-Math.PI)alpha+=2*Math.PI;
+  const FOCUS=6, PERIOD=7000;
+  let W=0,H=0,dpr=1,raf=0,running=false; const t0=performance.now();
+  function size(){ dpr=Math.min(2,window.devicePixelRatio||1); W=cv.clientWidth; H=cv.clientHeight; cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); }
+  function draw(now){
+    const t=REDUCED?0.35:((now-t0)/PERIOD)%1;
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const g=ctx.createRadialGradient(W*.5,H*.4,0,W*.5,H*.4,Math.max(W,H)*.7);
+    g.addColorStop(0,'#11142a'); g.addColorStop(1,'#06070E'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    const base=(Math.min(W,H*1.2)*0.5)/sq[FOCUS].s, sc=base*Math.pow(PHI,t);
+    ctx.save(); ctx.translate(W*0.5,H*0.40); ctx.scale(sc,sc); ctx.rotate(-alpha*t); ctx.translate(-P.x,-P.y);
+    const mn=Math.min(W,H);
+    for(let k=0;k<sq.length;k++){
+      const q=sq[k], px=q.s*sc; if(px<0.6) break;
+      const a=Math.min(1,Math.max(0,(3.2*mn-px)/(1.6*mn)))*Math.min(1,px/14);
+      if(a<=0) continue;
+      ctx.lineWidth=1/sc; ctx.strokeStyle=INK((0.16*a).toFixed(3)); ctx.strokeRect(q.x,q.y,q.s,q.s);
+      if(k%2===0){ ctx.fillStyle=GOLD((0.025*a).toFixed(3)); ctx.fillRect(q.x,q.y,q.s,q.s); }
+    }
+    for(const pass of [0,1]){
+      ctx.beginPath();
+      for(let k=0;k<sq.length;k++){ const q=sq[k]; if(q.s*sc<0.4) break; ctx.moveTo(q.cx+q.s*Math.cos(q.a0),q.cy+q.s*Math.sin(q.a0)); ctx.arc(q.cx,q.cy,q.s,q.a0,q.a0+Math.PI/2,false); }
+      if(pass===0){ ctx.lineWidth=7/sc; ctx.strokeStyle=GOLD(.10); } else { ctx.lineWidth=1.8/sc; ctx.strokeStyle=GOLD(.92); }
+      ctx.stroke();
+    }
+    ctx.restore();
+    if(running&&!REDUCED) raf=requestAnimationFrame(draw);
+  }
+  function start(){ if(running) return; running=true; size(); if(REDUCED) draw(performance.now()); else raf=requestAnimationFrame(draw); }
+  function stop(){ running=false; cancelAnimationFrame(raf); }
+  window.addEventListener('resize',()=>{ if(!$('#home').hidden){ size(); draw(performance.now()); } });
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) stop(); else if(!$('#home').hidden) start(); });
+  return {start,stop};
+})();
+
+/* ================= 01 · LA REGLA ================= */
+INIT.regla=function(){
+  let count=6, beesAnim=null;   // número de términos visibles, desde F0 = 0
+  function chips(){
+    const box=$('#fibChips'); box.innerHTML='';
+    for(let i=0;i<count;i++){
+      const c=document.createElement('div'); c.className='chip'+(i===count-1&&count>2?' new':(count>2&&(i===count-2||i===count-3)?' sum':''));
+      c.innerHTML='<small>F'+i+'</small><b>'+FIB[i].toLocaleString('es-MX')+'</b>'; box.appendChild(c);
+    }
+    $('#fibEq').textContent=count>2? FIB[count-3].toLocaleString('es-MX')+' + '+FIB[count-2].toLocaleString('es-MX')+' = '+FIB[count-1].toLocaleString('es-MX') : '0 y 1: las semillas';
+    $('#fibNext').disabled=count>=31;
+  }
+  $('#fibNext').addEventListener('click',()=>{ count=Math.min(31,count+1); chips(); });
+  $('#fibReset').addEventListener('click',()=>{ count=2; chips(); });
+  chips();
+
+  // escaleras y sílabas
+  function comps(n){ if(n===0) return [[]]; if(n<0) return []; return comps(n-1).map(c=>[...c,1]).concat(comps(n-2).map(c=>[...c,2])); }
+  function stairs(){
+    const n=+$('#steps').value; $('#stepsOut').textContent=n;
+    const L=comps(n).sort((a,b)=>a.length-b.length||a.join('').localeCompare(b.join('')));
+    $('#compCount').textContent=L.length+(L.length===1?' forma':' formas');
+    $('#compLbl').textContent='de cubrir '+n+(n===1?' tiempo':' tiempos')+' con pasos de 1 y 2';
+    const box=$('#comps'); box.innerHTML='';
+    L.forEach(c=>{ const r=document.createElement('div'); r.className='comp'; c.forEach(k=>{ const i=document.createElement('i'); i.className=k===1?'s1':'s2'; r.appendChild(i); }); box.appendChild(r); });
+    const st=$('#compStrip'); st.innerHTML='';
+    for(let k=1;k<=8;k++){ const s=document.createElement('span'); s.className=k===n?'on':''; s.innerHTML='<small>n='+k+'</small>'+FIB[k+1]; st.appendChild(s); }
+  }
+  onInput($('#steps'),stairs); stairs();
+
+  // árbol del zángano
+  const cv=$('#cvBees'), tipEl=$('#tipBees'); let box={w:0,h:0}, rows=[], shown=7;
+  (function build(){ rows=[[{s:'M',p:-1}]]; for(let g=1;g<7;g++){ const prev=rows[g-1], row=[]; prev.forEach((nd,i)=>{ if(nd.s==='M') row.push({s:'F',p:i}); else { row.push({s:'M',p:i}); row.push({s:'F',p:i}); } }); rows.push(row); } })();
+  const NAMES=['el zángano','su madre','abuelos','bisabuelos','tatarabuelos','5 generaciones atrás','6 generaciones atrás'];
+  const SHORT=['zángano','madre','abuelos','bisabuelos','tatarabuelos','5.ª gen.','6.ª gen.'];
+  let hoverRow=-1;
+  function geo(){ const top=18,bot=34,rh=(box.h-top-bot)/6, left=box.w<480?8:96, right=box.w<480?44:96; return {Y:g=>box.h-bot-g*rh, X:(g,i)=>left+(box.w-left-right)*(i+1)/(rows[g].length+1), right}; }
+  function draw(){
+    const f=fit(cv,chartH(cv,0.72,300,420)); box={w:f.w,h:f.h}; const ctx=f.ctx, G=geo();
+    const r=box.w<480?5:7;
+    for(let g=1;g<shown;g++) rows[g].forEach((nd,i)=>{ ctx.strokeStyle=INK(.25); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(G.X(g,i),G.Y(g)); ctx.lineTo(G.X(g-1,nd.p),G.Y(g-1)); ctx.stroke(); });
+    for(let g=0;g<shown;g++){
+      if(g===hoverRow){ ctx.fillStyle=GOLD(.07); ctx.fillRect(4,G.Y(g)-14,box.w-8,28); }
+      if(box.w>=480) txt(ctx,SHORT[g],10,G.Y(g),{font:'12px '+css('--sans'),color:g===hoverRow?css('--gold'):INK(.55)});
+      rows[g].forEach((nd,i)=>{ const x=G.X(g,i), y=G.Y(g); ctx.beginPath(); ctx.arc(x,y,r,0,7); if(nd.s==='F'){ ctx.fillStyle=css('--gold'); ctx.fill(); } else { ctx.fillStyle='#0d0f1c'; ctx.fill(); ctx.lineWidth=1.5; ctx.strokeStyle=INK(.8); ctx.stroke(); } });
+      const nF=rows[g].filter(n=>n.s==='F').length, nM=rows[g].length-nF;
+      txt(ctx,String(rows[g].length),box.w-G.right+10,G.Y(g),{font:'600 15px '+css('--mono'),color:g===shown-1?css('--gold'):INK(.85)});
+      if(box.w>=480) txt(ctx,nF+'♀ '+nM+'♂',box.w-G.right+38,G.Y(g),{font:'11px '+css('--mono'),color:INK(.45)});
+    }
+    if(box.w<480) txt(ctx,'zángano',G.X(0,0),G.Y(0)+20,{align:'center',color:INK(.75)});
+  }
+  function play(){ beesAnim&&beesAnim.stop(); shown=1; draw(); if(REDUCED){ shown=7; draw(); return; } let k=1; const id=setInterval(()=>{ k++; shown=k; draw(); if(k>=7) clearInterval(id); },380); beesAnim={stop(){clearInterval(id);}}; }
+  cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(), y=e.clientY-r.top; let g=Math.round((box.h-34-y)/((box.h-52)/6)); if(g<0||g>=shown){ if(hoverRow!==-1){hoverRow=-1;draw();} hideTip(tipEl); return; }
+    if(g!==hoverRow){ hoverRow=g; draw(); }
+    const row=rows[g], nF=row.filter(n=>n.s==='F').length, nM=row.length-nF;
+    const why=g===0?'el punto de partida':(g===1?'un macho solo tiene madre':(rows[g-1].filter(n=>n.s==='F').length+' hembras abajo aportan 2 cada una, '+(rows[g-1].length-rows[g-1].filter(n=>n.s==='F').length)+' machos aportan 1'));
+    tip(tipEl,e.clientX-r.left,y,'<b>'+row.length+(g===0?' abeja':(row.length===1?' abeja':' abejas'))+'</b>'+NAMES[g]+': '+nF+' hembra'+(nF===1?'':'s')+', '+nM+' macho'+(nM===1?'':'s')+'<br>'+why,box); });
+  cv.addEventListener('pointerleave',()=>{ hideTip(tipEl); if(hoverRow!==-1){ hoverRow=-1; draw(); } });
+  $('#beesPlay').addEventListener('click',play);
+  play();
+  return {resize:draw, stop(){ beesAnim&&beesAnim.stop(); }};
+};
+
+/* ================= 02 · DE LA REGLA AL NÚMERO ================= */
+INIT.numero=function(){
+  const err=n=>SQ5*Math.pow(PSI,n)/(Math.pow(PHI,n)-Math.pow(PSI,n));
+  const cv=$('#cvRatio'), tipEl=$('#tipRatio');
+  let mode='ratio', shown=0, active=6, timer=0, box={w:0,h:0}, hover=false;
+  const NR=16, NE=40, nMax=()=>mode==='ratio'?NR:NE;
+  (function(){ let h='<table><tr><th>n</th><th>Fₙ₊₁/Fₙ</th><th>cociente</th><th>error</th></tr>';
+    for(let n=1;n<=NR;n++) h+='<tr><td>'+n+'</td><td>'+FIB[n+1]+'/'+FIB[n]+'</td><td>'+(FIB[n+1]/FIB[n]).toFixed(6)+'</td><td>'+err(n).toExponential(2)+'</td></tr>';
+    $('#ratioTable').innerHTML=h+'</table>'; })();
+  function geom(){
+    const padL=mode==='ratio'?40:54, padR=16, padT=14, padB=30;
+    const X=n=>padL+(box.w-padL-padR)*(n-1)/(nMax()-1);
+    let Y;
+    if(mode==='ratio'){ const y0=0.9,y1=2.1; Y=v=>padT+(box.h-padT-padB)*(1-(v-y0)/(y1-y0)); }
+    else { const y0=-17,y1=0.5; Y=v=>padT+(box.h-padT-padB)*(1-(Math.log10(Math.abs(v))-y0)/(y1-y0)); }
+    return {padL,padR,padT,padB,X,Y};
+  }
+  const expo=e=>{ const s=e.toExponential(2).split('e'); return s[0]+' × 10'+sup(+s[1]); };
+  function readout(n){
+    if(mode==='ratio'){ $('#ratioBig').textContent=FIB[n+1]+' / '+FIB[n]+' = '+(FIB[n+1]/FIB[n]).toFixed(5); $('#ratioLbl').textContent='término '+n+' · '+(err(n)>0?'por encima':'por debajo')+' de φ'; }
+    else { const e=Math.abs(err(n)); $('#ratioBig').textContent='|error| = '+(e<1e-3?expo(e):e.toFixed(5)); $('#ratioLbl').textContent='término '+n+' · '+Math.max(0,Math.floor(-Math.log10(e)))+' cifras decimales ya coinciden'; }
+  }
+  const val=n=>mode==='ratio'?FIB[n+1]/FIB[n]:Math.abs(err(n));
+  function draw(){
+    const f=fit(cv,chartH(cv,0.56,230,380)); box={w:f.w,h:f.h}; const ctx=f.ctx, g=geom();
+    if(mode==='ratio'){
+      [1,1.5,2].forEach(v=>{ const y=g.Y(v); hline(ctx,g.padL,box.w-g.padR,y,INK(.08)); txt(ctx,v.toFixed(1),g.padL-8,y,{align:'right',mono:1,color:INK(.5)}); });
+      const yp=g.Y(PHI); hline(ctx,g.padL,box.w-g.padR,yp,INK(.55),[5,5]);
+      txt(ctx,'φ = 1.618…',box.w-g.padR,yp-11,{align:'right',mono:1,color:INK(.8)});
+    } else {
+      [0,-4,-8,-12,-16].forEach(p=>{ const y=g.Y(Math.pow(10,p)); hline(ctx,g.padL,box.w-g.padR,y,INK(.08)); txt(ctx,p===0?'1':'10'+sup(p),g.padL-8,y,{align:'right',mono:1,color:INK(.5)}); });
+    }
+    const step=mode==='ratio'?3:5;
+    for(let n=1;n<=nMax();n++) if(n===1||n%step===0) txt(ctx,String(n),g.X(n),box.h-g.padB+9,{align:'center',base:'top',mono:1,color:INK(.5)});
+    const last=Math.min(shown,nMax());
+    ctx.strokeStyle=css('--gold'); ctx.lineWidth=2; ctx.lineJoin='round'; ctx.beginPath();
+    for(let n=1;n<=last;n++){ const x=g.X(n),y=g.Y(val(n)); n===1?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+    ctx.stroke();
+    for(let n=1;n<=last;n++) dot(ctx,g.X(n),g.Y(val(n)),n===active?6:4,css('--gold'));
+    if(mode==='error'&&last>=NE){
+      const x1=g.X(12),y1=g.Y(val(12)),x2=g.X(30),y2=g.Y(val(30));
+      ctx.save(); ctx.translate((x1+x2)/2,(y1+y2)/2-16); ctx.rotate(Math.atan2(y2-y1,x2-x1)); txt(ctx,'÷ 2.618 en cada paso',0,0,{align:'center',font:'13px '+css('--sans'),color:INK(.85)}); ctx.restore();
+    }
+    if(active&&active<=last) vline(ctx,g.X(active),g.padT,box.h-g.padB,INK(.22));
+  }
+  function play(){
+    clearInterval(timer); shown=0; active=1;
+    if(REDUCED){ shown=nMax(); active=mode==='ratio'?6:nMax(); readout(active); draw(); return; }
+    timer=setInterval(()=>{ shown++; if(!hover) active=shown; readout(Math.min(active,nMax())); draw(); if(shown>=nMax()){ clearInterval(timer); if(!hover){ active=mode==='ratio'?6:nMax(); readout(active); draw(); } } }, mode==='ratio'?170:70);
+  }
+  function pick(clientX){ const r=cv.getBoundingClientRect(), g=geom(); const n=Math.round((clientX-r.left-g.padL)/((box.w-g.padL-g.padR)/(nMax()-1)))+1; return clamp(n,1,Math.min(shown,nMax())); }
+  function showTip(n){ const g=geom(), e=err(n); tip(tipEl,g.X(n),g.Y(val(n)),'<b>'+(mode==='ratio'?(FIB[n+1]/FIB[n]).toFixed(6):Math.abs(e).toExponential(2))+'</b>'+FIB[n+1]+' / '+FIB[n]+'<br>término '+n+' · error '+(e>0?'+':'−')+Math.abs(e).toExponential(2),box); }
+  const onMove=e=>{ if(shown<1) return; hover=true; active=pick(e.clientX); readout(active); draw(); showTip(active); };
+  cv.addEventListener('pointermove',onMove); cv.addEventListener('pointerdown',onMove);
+  cv.addEventListener('pointerleave',()=>{ hover=false; hideTip(tipEl); });
+  cv.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ e.preventDefault(); active=clamp(active+(e.key==='ArrowRight'?1:-1),1,Math.min(shown,nMax())); readout(active); draw(); showTip(active);} });
+  cv.addEventListener('blur',()=>hideTip(tipEl));
+  const modeBtns=$$('[data-mode]');
+  modeBtns.forEach(b=>b.addEventListener('click',()=>{
+    mode=b.dataset.mode; pressGroup(modeBtns,b);
+    $('#ratioTitle').textContent=mode==='ratio'?'El cociente persigue a φ':'La distancia a φ, en escala logarítmica';
+    $('#ratioSub').textContent=mode==='ratio'?'Fₙ₊₁ / Fₙ para cada término n':'|Fₙ₊₁ / Fₙ − φ|; cada línea horizontal está 10,000 veces más cerca';
+    play();
+  }));
+  $('#ratioPlay').addEventListener('click',play);
+
+  // recta áurea
+  const cr=$('#cvRecta'), slider=$('#cut'), tipR=$('#tipRecta'); let rbox={w:0,h:0}, anim=null;
+  const p0=0.5,p1=0.8,y0=0.9,y1=3.3;
+  const rg=()=>{ const padL=36,padR=16,padT=12,padB=28; return {padL,padR,padT,padB,X:p=>padL+(rbox.w-padL-padR)*(p-p0)/(p1-p0),Y:v=>padT+(rbox.h-padT-padB)*(1-(v-y0)/(y1-y0)),P:x=>p0+(x-padL)/(rbox.w-padL-padR)*(p1-p0)}; };
+  function drawRecta(){
+    const p=+slider.value, A=1/p, B=p/(1-p), gold=Math.abs(A-B)<0.012;
+    $('#segA').style.flex='0 0 '+(p*100)+'%'; $('#segB').style.flex='1 1 auto';
+    $('#goldFlag').classList.toggle('on',gold);
+    $('#rectaVals').textContent='(a+b)/a = '+A.toFixed(3)+' · a/b = '+B.toFixed(3)+' · a ocupa '+(p*100).toFixed(1)+' %';
+    const f=fit(cr,chartH(cr,0.5,210,320)); rbox={w:f.w,h:f.h}; const ctx=f.ctx, g=rg();
+    [1,2,3].forEach(v=>{ const y=g.Y(v); hline(ctx,g.padL,rbox.w-g.padR,y,INK(.08)); txt(ctx,String(v),g.padL-8,y,{align:'right',mono:1,color:INK(.5)}); });
+    [0.5,0.6,0.7,0.8].forEach(v=>txt(ctx,Math.round(v*100)+' %',g.X(v),rbox.h-g.padB+8,{align:'center',base:'top',mono:1,color:INK(.5)}));
+    ctx.save(); ctx.beginPath(); ctx.rect(g.padL,g.padT-2,rbox.w-g.padL-g.padR,rbox.h-g.padT-g.padB+2); ctx.clip();
+    const curve=(fn,color,dash)=>{ ctx.setLineDash(dash); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath(); for(let i=0;i<=160;i++){ const q=p0+(p1-p0)*i/160, Y=g.Y(Math.min(y1+0.5,fn(q))); i?ctx.lineTo(g.X(q),Y):ctx.moveTo(g.X(q),Y);} ctx.stroke(); ctx.setLineDash([]); };
+    curve(q=>1/q,css('--gold'),[]); curve(q=>q/(1-q),css('--blue'),[6,5]);
+    ctx.restore();
+    txt(ctx,'(a+b)/a',g.X(0.508),g.Y(1/0.508)-14,{font:'12.5px '+css('--sans'),color:INK(.85)});
+    txt(ctx,'a/b',g.X(0.72)-10,g.Y(0.72/0.28),{align:'right',font:'12.5px '+css('--sans'),color:INK(.85)});
+    const xi=g.X(1/PHI), yi=g.Y(PHI);
+    ctx.beginPath(); ctx.arc(xi,yi,gold?9:6,0,7); ctx.strokeStyle=css('--gold'); ctx.lineWidth=1.5; ctx.stroke();
+    txt(ctx,'φ',xi+10,yi-12,{font:'13px '+css('--serif'),color:INK(.9)});
+    const xc=g.X(p); vline(ctx,xc,g.padT,rbox.h-g.padB,INK(.35));
+    [[A,css('--gold')],[Math.min(B,y1),css('--blue')]].forEach(([v,c])=>dot(ctx,xc,g.Y(v),5,c));
+  }
+  onInput(slider,drawRecta);
+  let dragR=false;
+  const setFromX=e=>{ const r=cr.getBoundingClientRect(), g=rg(); let p=clamp(g.P(e.clientX-r.left),p0,p1); if(Math.abs(p-1/PHI)<0.004) p=1/PHI; slider.value=p; drawRecta(); };
+  cr.addEventListener('pointerdown',e=>{ dragR=true; cr.setPointerCapture(e.pointerId); setFromX(e); });
+  cr.addEventListener('pointermove',e=>{ if(dragR) setFromX(e); else { const r=cr.getBoundingClientRect(), g=rg(), p=g.P(e.clientX-r.left); if(p<p0||p>p1){hideTip(tipR);return;} tip(tipR,e.clientX-r.left,e.clientY-r.top,'<b>'+(p*100).toFixed(1)+' %</b>(a+b)/a = '+(1/p).toFixed(3)+'<br>a/b = '+(p/(1-p)).toFixed(3),rbox);} });
+  cr.addEventListener('pointerup',()=>{dragR=false;}); cr.addEventListener('pointerleave',()=>hideTip(tipR));
+  $('#goGolden').addEventListener('click',()=>{ const from=+slider.value, to=1/PHI; anim&&anim.stop(); anim=animate(700,k=>{ const e=1-Math.pow(1-k,3); slider.value=from+(to-from)*e; drawRecta(); }); });
+  drawRecta(); play();
+  return {resize(){ draw(); drawRecta(); }, stop(){ clearInterval(timer); anim&&anim.stop(); }};
+};
+
+/* ================= 03 · LA ESPIRAL ================= */
+INIT.espiral=function(){
+  const NMAX=11, cv=$('#cvTiles');
+  let n=NMAX, showSq=true, showFib=true, showLog=false, box={w:0,h:0}, auto=null;
+  // mosaico de Fibonacci (y hacia arriba)
+  function tiling(sizes){
+    const out=[]; let x0=0,y0=0,x1=sizes[0],y1=sizes[0];
+    out.push({x:0,y:0,s:sizes[0],cx:sizes[0],cy:sizes[0],a0:Math.PI});
+    for(let k=1;k<sizes.length;k++){
+      const d=(k-1)%4, s=sizes[k]; let q;
+      if(d===0) q={x:x1,y:y0,s,cx:x1,cy:y1,a0:-Math.PI/2};
+      else if(d===1) q={x:x0,y:y1,s,cx:x0,cy:y1,a0:0};
+      else if(d===2) q={x:x0-s,y:y0,s,cx:x0,cy:y0,a0:Math.PI/2};
+      else q={x:x0,y:y0-s,s,cx:x1,cy:y0,a0:Math.PI};
+      out.push(q); x0=Math.min(x0,q.x); y0=Math.min(y0,q.y); x1=Math.max(x1,q.x+s); y1=Math.max(y1,q.y+s);
+    }
+    return out;
+  }
+  const fibSq=tiling(Array.from({length:NMAX},(_,i)=>FIB[i+1]));
+  // espiral áurea exacta alineada con el cuadrado mayor visible
+  function goldenSpiral(m){
+    const K=32+(((m-32)%4)+4)%4, sizes=[]; for(let k=0;k<K;k++) sizes.push(FIB[m]*Math.pow(PHI,k-(K-1)));
+    const gs=tiling(sizes), big=gs[K-1], ref=fibSq[m-1];
+    // K ≡ m (mod 4): el cuadrado mayor de ambos mosaicos queda en la misma posición y orientación
+    const dx=ref.x-big.x, dy=ref.y-big.y;
+    const pole={x:gs[0].x+gs[0].s/2+dx,y:gs[0].y+gs[0].s/2+dy};
+    const end={x:big.cx+big.s*Math.cos(big.a0+Math.PI/2)+dx,y:big.cy+big.s*Math.sin(big.a0+Math.PI/2)+dy};
+    return {pole,end};
+  }
+  function draw(){
+    const f=fit(cv,cv.clientWidth<560?Math.round(cv.clientWidth*0.8):chartH(cv,0.64,300,460)); box={w:f.w,h:f.h}; const ctx=f.ctx;
+    const vis=fibSq.slice(0,n);
+    let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity; vis.forEach(q=>{x0=Math.min(x0,q.x);y0=Math.min(y0,q.y);x1=Math.max(x1,q.x+q.s);y1=Math.max(y1,q.y+q.s);});
+    const pad=14, sc=Math.min((box.w-2*pad)/(x1-x0),(box.h-2*pad)/(y1-y0));
+    const ox=(box.w-(x1-x0)*sc)/2-x0*sc, oy=(box.h-(y1-y0)*sc)/2+y1*sc;
+    const X=x=>ox+x*sc, Y=y=>oy-y*sc;
+    // rectángulo exterior
+    ctx.strokeStyle=GOLD(.5); ctx.lineWidth=1.4; ctx.strokeRect(X(x0),Y(y1),(x1-x0)*sc,(y1-y0)*sc);
+    if(showSq) vis.forEach((q,i)=>{ const px=q.s*sc;
+      ctx.fillStyle=i%2?GOLD(.05):INK(.025); ctx.fillRect(X(q.x),Y(q.y+q.s),px,px);
+      ctx.strokeStyle=INK(.32); ctx.lineWidth=1; ctx.strokeRect(X(q.x)+.5,Y(q.y+q.s)+.5,px-1,px-1);
+      if(px>20) txt(ctx,String(q.s),X(q.x+q.s/2),Y(q.y+q.s/2),{align:'center',font:'600 '+Math.min(38,Math.round(px*0.3))+'px '+css('--serif'),color:INK(i===n-1?.85:.5)});
+    });
+    if(showFib){ ctx.strokeStyle=css('--gold'); ctx.lineWidth=2.2; ctx.beginPath();
+      vis.forEach(q=>{ const a0=-q.a0, a1=-(q.a0+Math.PI/2); ctx.moveTo(X(q.cx)+q.s*sc*Math.cos(a0),Y(q.cy)+q.s*sc*Math.sin(a0)); ctx.arc(X(q.cx),Y(q.cy),q.s*sc,a0,a1,true); });
+      ctx.stroke(); }
+    if(showLog&&n>=2){
+      const G=goldenSpiral(n), b=2*Math.log(PHI)/Math.PI;
+      const th0=Math.atan2(G.end.y-G.pole.y,G.end.x-G.pole.x), r0=Math.hypot(G.end.x-G.pole.x,G.end.y-G.pole.y);
+      ctx.setLineDash([6,5]); ctx.strokeStyle=css('--blue'); ctx.lineWidth=2; ctx.beginPath();
+      const turns=(n+3)*Math.PI/2; let first=true;
+      for(let t=0;t<=turns;t+=0.02){ const th=th0-t, r=r0*Math.exp(-b*t); const x=X(G.pole.x+r*Math.cos(th)), y=Y(G.pole.y+r*Math.sin(th)); if(first){ctx.moveTo(x,y);first=false;} else ctx.lineTo(x,y); }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    // ecuación de la suma de cuadrados
+    const terms=vis.map(q=>q.s); const sum=terms.reduce((a,v)=>a+v*v,0);
+    const shownT=terms.length<=6?terms.map(v=>v+'²').join(' + '):terms.slice(0,3).map(v=>v+'²').join(' + ')+' + … + '+terms[terms.length-1]+'²';
+    $('#sumEq').textContent=shownT+' = '+sum.toLocaleString('es-MX')+' = '+FIB[n]+' × '+FIB[n+1];
+    $('#tileSub').textContent='Rectángulo de '+FIB[n]+' × '+FIB[n+1]+' armado con '+n+(n===1?' cuadrado':' cuadrados');
+  }
+  const sl=$('#nSq');
+  onInput(sl,()=>{ auto&&auto.stop(); n=+sl.value; $('#nSqOut').textContent=n; draw(); });
+  const tg=(id,get,set)=>{ const b=$(id); b.addEventListener('click',()=>{ set(!get()); b.setAttribute('aria-pressed',String(get())); draw(); }); };
+  tg('#tgSq',()=>showSq,v=>showSq=v); tg('#tgFib',()=>showFib,v=>showFib=v); tg('#tgLog',()=>showLog,v=>showLog=v);
+  const opts=$$('#spiralOpts .opt');
+  opts.forEach(o=>o.addEventListener('click',()=>{
+    pressGroup(opts,o); showLog=true; $('#tgLog').setAttribute('aria-pressed','true'); draw();
+    const ok=o.dataset.ok==='1', v=$('#spiralVerdict'); v.hidden=false;
+    v.querySelector('b').textContent=ok?'Exacto ✦':'Mira de cerca';
+    v.querySelector('p').textContent=ok?'Casi idénticas: con pocos cuadrados se separan, con muchos se confunden, pero nunca son la misma curva. Mueve el control a 3 o 4 cuadrados para ver la diferencia.':'La línea azul punteada es la espiral áurea. Con muchos cuadrados casi se pega a la dorada; con pocos, se separa. Ni idénticas ni distintas: casi.';
+  }));
+  // animación inicial: los cuadrados aparecen uno a uno
+  function intro(){ if(REDUCED){ draw(); return; } let k=1; n=1; sl.value=1; $('#nSqOut').textContent=1; draw(); const id=setInterval(()=>{ k++; n=k; sl.value=k; $('#nSqOut').textContent=k; draw(); if(k>=NMAX) clearInterval(id); },320); auto={stop(){clearInterval(id);}}; }
+  intro();
+
+  // crecimiento por cuarto de vuelta
+  const cg=$('#cvGrowth'), tipG=$('#tipGrowth'); let gbox={w:0,h:0}; const K=12;
+  const gr=()=>{ const padL=34,padR=14,padT=14,padB=30; const bw=(gbox.w-padL-padR)/K; return {padL,padR,padT,padB,bw,X:k=>padL+bw*(k-1),Y:v=>padT+(gbox.h-padT-padB)*(1-v/2.2)}; };
+  function drawG(){
+    const f=fit(cg,chartH(cg,0.42,190,260)); gbox={w:f.w,h:f.h}; const ctx=f.ctx, g=gr();
+    [0,1,2].forEach(v=>{ hline(ctx,g.padL,gbox.w-g.padR,g.Y(v),INK(.08)); txt(ctx,'×'+v,g.padL-6,g.Y(v),{align:'right',mono:1,color:INK(.5)}); });
+    for(let k=1;k<=K;k++){ const v=FIB[k+1]/FIB[k], x=g.X(k)+2, w=g.bw-4; rbar(ctx,x,g.Y(v),w,g.Y(0)-g.Y(v),4,GOLD(.7));
+      if(k<=4) txt(ctx,'×'+(Number.isInteger(v)?v:v.toFixed(2)),x+w/2,g.Y(v)-8,{align:'center',font:'11.5px '+css('--mono'),color:INK(.8)});
+      txt(ctx,String(k),x+w/2,gbox.h-g.padB+8,{align:'center',base:'top',font:'11px '+css('--mono'),color:INK(.45)}); }
+    hline(ctx,g.padL,gbox.w-g.padR,g.Y(PHI),css('--blue'),[6,5]);
+    txt(ctx,'φ = 1.618',gbox.w-g.padR,g.Y(PHI)-10,{align:'right',mono:1,color:INK(.85)});
+  }
+  cg.addEventListener('pointermove',e=>{ const r=cg.getBoundingClientRect(), g=gr(), k=Math.floor((e.clientX-r.left-g.padL)/g.bw)+1; if(k<1||k>K){hideTip(tipG);return;} const v=FIB[k+1]/FIB[k]; tip(tipG,e.clientX-r.left,g.Y(v),'<b>×'+v.toFixed(4)+'</b>cuarto de vuelta '+k+': '+FIB[k+1]+' / '+FIB[k]+'<br>diferencia con φ: '+(v-PHI>0?'+':'−')+Math.abs(v-PHI).toFixed(4),gbox); });
+  cg.addEventListener('pointerleave',()=>hideTip(tipG));
+  drawG();
+  return {resize(){ draw(); drawG(); }, stop(){ auto&&auto.stop(); }};
+};
+
+/* ================= 04 · DONDE VIVE DE VERDAD ================= */
+INIT.naturaleza=function(){
+  const GA=360/(PHI*PHI);
+  const cv=$('#cvSun'), sl=$('#sunAng'); let arms=0, anim=null;
+  function drawSun(){
+    const w=cv.clientWidth, side=Math.min(w,520); const f=fit(cv,side); const ctx=f.ctx;
+    const ang=+sl.value*Math.PI/180, Nn=600, cx=f.w/2, cy=side/2, c=(side/2-6)/Math.sqrt(Nn);
+    const pos=n=>{ const r=c*Math.sqrt(n), t=n*ang; return [cx+r*Math.cos(t),cy+r*Math.sin(t)]; };
+    for(let n=1;n<=Nn;n++){
+      const [x,y]=pos(n), fr=n/Nn;
+      ctx.beginPath(); ctx.arc(x,y,Math.max(1.2,c*(arms?0.36:0.48)),0,7);
+      ctx.fillStyle=arms?INK(.28):'rgba('+Math.round(231-fr*40)+','+Math.round(196-fr*30)+','+Math.round(107+fr*30)+',0.92)';
+      ctx.fill();
+    }
+    if(arms){ // cada brazo une la semilla n con la n + arms
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      for(let r0=1;r0<=arms;r0++){
+        ctx.beginPath(); for(let n=r0;n<=Nn;n+=arms){ const [x,y]=pos(n); n===r0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+        ctx.strokeStyle=css('--gold'); ctx.lineWidth=1.6; ctx.stroke();
+      }
+    }
+    const a=+sl.value; $('#sunOut').textContent=a.toFixed(2)+'°';
+    $$('#sunPresets button').forEach(b=>b.setAttribute('aria-pressed',String(Math.abs(+b.dataset.a-a)<0.006)));
+    drawPack();
+  }
+  onInput(sl,drawSun);
+  $$('#sunPresets button').forEach(b=>b.addEventListener('click',()=>{ const from=+sl.value, to=+b.dataset.a; anim&&anim.stop(); anim=animate(600,k=>{ sl.value=from+(to-from)*(1-Math.pow(1-k,3)); drawSun(); }); }));
+  const armBtns=$$('[data-arms]'); armBtns.forEach(b=>b.addEventListener('click',()=>{ arms=+b.dataset.arms; pressGroup(armBtns,b); drawSun(); }));
+
+  // calidad de empaquetamiento por ángulo
+  const cp=$('#cvPack'), tipP=$('#tipPack'); let pbox={w:0,h:0}, Q=null; const A0=130,A1=145,ST=0.05;
+  function computeQ(){
+    const M=300, out=[];
+    for(let a=A0;a<=A1+1e-9;a+=ST){
+      const t=a*Math.PI/180, xs=new Float64Array(M+1), ys=new Float64Array(M+1);
+      for(let n=1;n<=M;n++){ const r=Math.sqrt(n); xs[n]=r*Math.cos(n*t); ys[n]=r*Math.sin(n*t); }
+      let mn=Infinity;
+      for(let i=2;i<=M;i++) for(let j=1;j<i;j++){ const dx=xs[i]-xs[j], dy=ys[i]-ys[j], d=dx*dx+dy*dy; if(d<mn) mn=d; }
+      out.push({a,q:Math.sqrt(mn)});
+    }
+    return out;
+  }
+  const pg=()=>{ const padL=38,padR=14,padT=16,padB=30; const mx=Math.max(...Q.map(o=>o.q))*1.08; return {padL,padR,padT,padB,X:a=>padL+(pbox.w-padL-padR)*(a-A0)/(A1-A0),Y:v=>padT+(pbox.h-padT-padB)*(1-v/mx),A:x=>A0+(x-padL)/(pbox.w-padL-padR)*(A1-A0)}; };
+  function drawPack(){
+    if(!Q) return;
+    const f=fit(cp,chartH(cp,0.45,200,280)); pbox={w:f.w,h:f.h}; const ctx=f.ctx, g=pg();
+    hline(ctx,g.padL,pbox.w-g.padR,g.Y(0),INK(.15));
+    [130,135,140,145].forEach(a=>txt(ctx,a+'°',g.X(a),pbox.h-g.padB+8,{align:'center',base:'top',mono:1,color:INK(.5)}));
+    txt(ctx,'peor',g.padL-6,g.Y(0)-8,{align:'right',font:'11px '+css('--sans'),color:INK(.45)});
+    txt(ctx,'mejor',g.padL-6,g.padT+6,{align:'right',font:'11px '+css('--sans'),color:INK(.45)});
+    ctx.strokeStyle=css('--gold'); ctx.lineWidth=1.8; ctx.lineJoin='round'; ctx.beginPath(); Q.forEach((o,i)=>{ const x=g.X(o.a),y=g.Y(o.q); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke();
+    const xg=g.X(GA); vline(ctx,xg,g.padT,pbox.h-g.padB,INK(.55),[4,4]); txt(ctx,'137.5°',xg+5,g.padT+4,{mono:1,color:INK(.85),font:'11.5px '+css('--mono')});
+    const xa=g.X(+sl.value); vline(ctx,xa,g.padT,pbox.h-g.padB,GOLD(.6));
+  }
+  cp.addEventListener('pointermove',e=>{ if(!Q) return; const r=cp.getBoundingClientRect(), g=pg(), a=g.A(e.clientX-r.left); if(a<A0||a>A1){hideTip(tipP);return;} const o=Q[clamp(Math.round((a-A0)/ST),0,Q.length-1)]; tip(tipP,e.clientX-r.left,g.Y(o.q),'<b>'+o.a.toFixed(2)+'°</b>separación mínima entre semillas: '+o.q.toFixed(2)+'<br>toca para probar ese ángulo',pbox); });
+  cp.addEventListener('pointerleave',()=>hideTip(tipP));
+  cp.addEventListener('click',e=>{ if(!Q) return; const r=cp.getBoundingClientRect(), a=pg().A(e.clientX-r.left); if(a>=A0&&a<=A1){ sl.value=a.toFixed(2); drawSun(); } });
+
+  // icosaedro
+  const ci=$('#cvIco'); let rx=-0.4, ry=0.6, spin=true, showR=true, raf=0, drag=null;
+  const V=[];
+  for(const s1 of [-1,1]) for(const s2 of [-1,1]){ V.push([0,s1,s2*PHI]); V.push([s1,s2*PHI,0]); V.push([s2*PHI,0,s1]); }
+  const E=[]; for(let i=0;i<12;i++) for(let j=i+1;j<12;j++){ const d=(V[i][0]-V[j][0])**2+(V[i][1]-V[j][1])**2+(V[i][2]-V[j][2])**2; if(Math.abs(d-4)<1e-6) E.push([i,j]); }
+  function orderRect(r,ax){ // ordenar vértices alrededor de su centro en su plano
+    const idx=[0,1,2].filter(i=>i!==ax); return r.slice().sort((p,q)=>Math.atan2(p[idx[1]],p[idx[0]])-Math.atan2(q[idx[1]],q[idx[0]])); }
+  const RQ=[orderRect(V.filter(v=>v[0]===0),0),orderRect(V.filter(v=>v[2]===0),2),orderRect(V.filter(v=>v[1]===0),1)];
+  function proj(v,w,h){ const cx=Math.cos(rx),sx=Math.sin(rx),cy=Math.cos(ry),sy=Math.sin(ry);
+    let x=v[0]*cy+v[2]*sy, z=-v[0]*sy+v[2]*cy, y=v[1]*cx-z*sx; z=v[1]*sx+z*cx;
+    const s=Math.min(w,h)*0.26, p=1/(1-z*0.07); return [w/2+x*s*p, h/2+y*s*p, z]; }
+  function drawIco(){
+    const f=fit(ci,Math.min(360,Math.round(ci.clientWidth*0.75))); const ctx=f.ctx;
+    const P=V.map(v=>proj(v,f.w,f.h));
+    if(showR) RQ.forEach(r=>{ const pts=r.map(v=>proj(v,f.w,f.h)); ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.closePath(); ctx.fillStyle=GOLD(.13); ctx.fill(); ctx.strokeStyle=GOLD(.85); ctx.lineWidth=1.4; ctx.stroke(); });
+    E.slice().sort((a,b)=>(P[a[0]][2]+P[a[1]][2])-(P[b[0]][2]+P[b[1]][2])).forEach(([i,j])=>{ const z=(P[i][2]+P[j][2])/2; ctx.strokeStyle=INK((0.2+0.45*(z+PHI)/(2*PHI)).toFixed(2)); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(P[i][0],P[i][1]); ctx.lineTo(P[j][0],P[j][1]); ctx.stroke(); });
+    P.forEach(p=>{ ctx.beginPath(); ctx.arc(p[0],p[1],3,0,7); ctx.fillStyle=INK(.9); ctx.fill(); });
+    if(showR) txt(ctx,'tres rectángulos de lados 1 : φ',f.w/2,f.h-12,{align:'center',font:'12px '+css('--sans'),color:INK(.7)});
+  }
+  function loop(){ if(spin&&!REDUCED){ ry+=0.006; rx+=0.0015; } drawIco(); raf=requestAnimationFrame(loop); }
+  ci.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; spin=false; ci.setPointerCapture(e.pointerId); });
+  ci.addEventListener('pointermove',e=>{ if(!drag) return; ry+=(e.clientX-drag.x)*0.01; rx+=(e.clientY-drag.y)*0.01; drag={x:e.clientX,y:e.clientY}; });
+  const end=()=>{ drag=null; setTimeout(()=>{ if(!drag) spin=true; },2500); };
+  ci.addEventListener('pointerup',end); ci.addEventListener('pointercancel',end);
+  ci.style.touchAction='none';
+  $('#icoRects').addEventListener('click',e=>{ showR=!showR; e.currentTarget.textContent=showR?'Ocultar rectángulos':'Mostrar rectángulos'; });
+
+  drawSun();
+  setTimeout(()=>{ Q=computeQ(); drawPack(); },30);
+  if(REDUCED) drawIco(); else raf=requestAnimationFrame(loop);
+  return {resize(){ drawSun(); drawIco(); }, stop(){ cancelAnimationFrame(raf); anim&&anim.stop(); }};
+};
+
+/* ================= 05 · DONDE LA INVENTAMOS ================= */
+INIT.mitos=function(){
+  const PRE=[
+    {t:'Tarjeta bancaria',a:85.6,b:53.98},{t:'Hoja A4',a:297,b:210},{t:'Hoja carta',a:279.4,b:215.9},
+    {t:'Pantalla 16:9',a:1920,b:1080},{t:'Mona Lisa (tabla)',a:77,b:53},{t:'Billete de dólar',a:156,b:66.3}
+  ];
+  const REF=[{n:'4:3',v:4/3},{n:'√2',v:Math.SQRT2},{n:'3:2',v:1.5},{n:'φ',v:PHI},{n:'5:3',v:5/3},{n:'16:9',v:16/9},{n:'2:1',v:2},{n:'√5',v:SQ5}];
+  const L0=1.2, L1=2.45;
+  const pre=$('#mPresets');
+  PRE.forEach(p=>{ const b=document.createElement('button'); b.type='button'; b.textContent=p.t; b.addEventListener('click',()=>{ $('#mA').value=p.a; $('#mB').value=p.b; update(); }); pre.appendChild(b); });
+  const cv=$('#cvLine');
+  function update(){
+    let a=parseFloat($('#mA').value), b=parseFloat($('#mB').value);
+    $$('#mPresets button').forEach((x,i)=>x.setAttribute('aria-pressed',String(PRE[i].a===a&&PRE[i].b===b)));
+    if(!(a>0)||!(b>0)){ $('#mRatio').textContent='—'; $('#mLbl').textContent='escribe dos medidas positivas'; $('#mMsg').textContent=''; draw(null); return; }
+    const r=Math.max(a,b)/Math.min(a,b);
+    const near=REF.slice().sort((p,q)=>Math.abs(p.v-r)-Math.abs(q.v-r))[0];
+    const dphi=(r-PHI)/PHI*100;
+    $('#mRatio').textContent=r.toFixed(3);
+    $('#mLbl').textContent=(Math.abs(dphi)<0.05?'prácticamente φ':(Math.abs(dphi).toFixed(1)+' % '+(dphi>0?'por encima':'por debajo')+' de φ'))+' · lo más cercano: '+near.n+' ('+near.v.toFixed(3)+')';
+    const inBand=Math.abs(dphi)<=5;
+    let msg;
+    if(near.n==='φ'&&inBand) msg='Queda en la franja de ±5 % alrededor de φ. Pero en esa misma franja caben 8:5 (1.600), 5:3 (1.667) y 16:10. Estar cerca de φ no prueba que alguien lo buscara.';
+    else if(inBand) msg='Entra en la franja de ±5 % de φ, aunque está más cerca de '+near.n+'. Con esa tolerancia, ¿cuál de las dos es la «verdadera»?';
+    else msg='Está fuera de la franja áurea. Lo más parecido es '+near.n+'.';
+    $('#mMsg').textContent=msg; draw(r);
+  }
+  function draw(r){
+    const f=fit(cv,cv.clientWidth<520?140:130), ctx=f.ctx, padL=14,padR=14, y=f.h*0.52;
+    const X=v=>padL+(f.w-padL-padR)*(v-L0)/(L1-L0);
+    ctx.fillStyle=GOLD(.13); ctx.fillRect(X(PHI*0.95),y-24,X(PHI*1.05)-X(PHI*0.95),48);
+    txt(ctx,'φ ± 5 %',(X(PHI*0.95)+X(PHI*1.05))/2,y+34,{align:'center',font:'11px '+css('--sans'),color:GOLD(.8)});
+    hline(ctx,padL,f.w-padR,y,INK(.35));
+    REF.forEach((o,i)=>{ const x=X(o.v), up=i%2===0; vline(ctx,x,y-6,y+6,o.n==='φ'?css('--gold'):INK(.6));
+      txt(ctx,o.n,x,up?y-16:y+16,{align:'center',font:(o.n==='φ'?'600 13px ':'12px ')+css('--mono'),color:o.n==='φ'?css('--gold'):INK(.7)}); });
+    if(r!=null){ const x=X(clamp(r,L0,L1)); ctx.beginPath(); ctx.moveTo(x,y-30); ctx.lineTo(x-7,y-42); ctx.lineTo(x+7,y-42); ctx.closePath(); ctx.fillStyle=INK(.95); ctx.fill(); vline(ctx,x,y-30,y+2,INK(.95)); txt(ctx,(r>L1?'> ':'')+r.toFixed(3),x,y-52,{align:'center',font:'600 12px '+css('--mono'),color:INK(.95)}); }
+  }
+  onInput($('#mA'),update); onInput($('#mB'),update);
+  update();
+
+  // nautilus vs áurea
+  const cn=$('#cvNaut');
+  function spiral(ctx,cx,cy,R,g,label,sub,color){
+    const b=Math.log(g)/(Math.PI/2), T=6*Math.PI, r0=R/Math.exp(b*T);
+    // tabiques de la concha
+    ctx.strokeStyle=INK(.13); ctx.lineWidth=1;
+    for(let t=Math.PI/3;t<=T;t+=Math.PI/6){ const r=r0*Math.exp(b*t), ri=r0*Math.exp(b*(t-2*Math.PI)); ctx.beginPath(); ctx.moveTo(cx+ri*Math.cos(t),cy-ri*Math.sin(t)); ctx.lineTo(cx+r*Math.cos(t),cy-r*Math.sin(t)); ctx.stroke(); }
+    ctx.strokeStyle=color; ctx.lineWidth=2.2; ctx.beginPath();
+    for(let t=0;t<=T;t+=0.02){ const r=r0*Math.exp(b*t), x=cx+r*Math.cos(t), y=cy-r*Math.sin(t); t?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.stroke();
+    txt(ctx,label,cx,cy+R+20,{align:'center',font:'600 14px '+css('--serif'),color:INK(.92)});
+    txt(ctx,sub,cx,cy+R+38,{align:'center',font:'12px '+css('--mono'),color:INK(.6)});
+  }
+  function drawN(){
+    const w=cn.clientWidth, narrow=w<520; const f=fit(cn,narrow?Math.round(w*1.55):Math.round(Math.min(380,w*0.55))); const ctx=f.ctx;
+    if(narrow){ const R=Math.min(f.w*0.36,f.h*0.18); spiral(ctx,f.w/2,f.h*0.22,R,PHI,'Espiral áurea','×1.618 por cuarto de vuelta',css('--gold')); spiral(ctx,f.w/2,f.h*0.70,R,1.31,'Nautilus real','×1.31 por cuarto de vuelta',css('--blue')); }
+    else { const R=Math.min(f.w*0.2,f.h*0.36); spiral(ctx,f.w*0.27,f.h*0.42,R,PHI,'Espiral áurea','×1.618 por cuarto de vuelta',css('--gold')); spiral(ctx,f.w*0.73,f.h*0.42,R,1.31,'Nautilus real','×1.31 por cuarto de vuelta',css('--blue')); }
+  }
+  drawN();
+  return {resize(){ update(); drawN(); }};
+};
+
+/* ================= 06 · EN LOS MERCADOS ================= */
+INIT.mercados=function(){
+  const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const d0=new Date(DJIA.start+'T12:00:00');
+  const DOW={px:DJIA.v.slice(), dates:DJIA.d.map(o=>new Date(d0.getTime()+o*86400000)), S:82, E:359, real:true};
+  const SIM=(function(){ const rnd=mulberry(20261026), N=150, knots=[[0,128],[28,101],[82,182],[108,131],[150,214]], px=[];
+    for(let i=0;i<N;i++){ let k=0; while(k<knots.length-2&&i>knots[k+1][0])k++; const [a,pa]=knots[k],[b,pb]=knots[k+1]; const u=(i-a)/(b-a), s=u*u*(3-2*u)*0.6+u*0.4; px.push(pa+(pb-pa)*s); }
+    let nz=0; for(let i=0;i<N;i++){ nz=nz*0.72+gauss(rnd)*2.1; px[i]+=nz; }
+    const arg=(a,b,fn)=>{ let k=a; for(let i=a;i<=b;i++) if(fn(px[i],px[k])) k=i; return k; };
+    return {px, dates:null, S:arg(18,40,(x,y)=>x<y), E:arg(70,92,(x,y)=>x>y), real:false}; })();
+  let D=DOW, ext=false, drag=null, box={w:0,h:0};
+  const RET=[0.236,0.382,0.5,0.618,0.786], EXT=[1.272,1.618];
+  const cv=$('#cvTrade'), tipEl=$('#tipTrade');
+  const N=()=>D.px.length;
+  const fp=v=>D.real?Math.round(v).toLocaleString('es-MX'):v.toFixed(1);
+  const fd=i=>{ const d=D.dates[i]; return d.getDate()+' '+MES[d.getMonth()]+' '+d.getFullYear(); };
+  const argExt=(a,b,fn)=>{ let k=a; for(let i=a;i<=b;i++) if(fn(D.px[i],D.px[k])) k=i; return k; };
+  function levels(){ const s=D.px[D.S], e=D.px[D.E], L=RET.map(r=>({r,v:e-r*(e-s),k:'ret'})); L.unshift({r:0,v:e,k:'end'}); L.push({r:1,v:s,k:'start'}); if(ext) EXT.forEach(r=>L.push({r,v:s+r*(e-s),k:'ext'})); return L; }
+  function geom(){
+    const small=box.w<520, padL=8, padR=small?50:124, padT=16, padB=D.real?50:14;
+    let lo=Math.min(...D.px), hi=Math.max(...D.px); levels().forEach(l=>{lo=Math.min(lo,l.v);hi=Math.max(hi,l.v);}); const m=(hi-lo)*0.05; lo-=m; hi+=m;
+    return {small,padL,padR,padT,padB,X:i=>padL+(box.w-padL-padR)*i/(N()-1),Y:v=>padT+(box.h-padT-padB)*(1-(v-lo)/(hi-lo)),I:x=>Math.round((x-padL)/(box.w-padL-padR)*(N()-1))};
+  }
+  function draw(){
+    const h=cv.clientWidth<520?Math.round(cv.clientWidth*0.95):chartH(cv,0.62,280,430);
+    const f=fit(cv,h); box={w:f.w,h:f.h}; const ctx=f.ctx, g=geom();
+    const x0=g.X(Math.min(D.S,D.E)), xR=box.w-g.padR, L=levels();
+    const pa=L.find(l=>l.r===0.5).v, pb=L.find(l=>l.r===0.618).v;
+    ctx.fillStyle=GOLD(.12); ctx.fillRect(x0,Math.min(g.Y(pa),g.Y(pb)),xR-x0,Math.abs(g.Y(pa)-g.Y(pb)));
+    L.forEach(l=>{ const key=(l.r===0.382||l.r===0.618), edge=(l.k==='end'||l.k==='start');
+      ctx.setLineDash(l.k==='ext'?[4,4]:[]); ctx.strokeStyle=key?GOLD(.95):edge?INK(.35):l.k==='ext'?GOLD(.6):INK(.28);
+      ctx.lineWidth=key?1.6:1; ctx.beginPath(); ctx.moveTo(x0,g.Y(l.v)); ctx.lineTo(xR,g.Y(l.v)); ctx.stroke(); ctx.setLineDash([]); });
+    // etiquetas sin encimarse
+    const gap=g.small?13:15, labs=L.map(l=>({l,y:g.Y(l.v)})).sort((a,b)=>a.y-b.y);
+    for(let i=1;i<labs.length;i++) if(labs[i].y-labs[i-1].y<gap) labs[i].y=labs[i-1].y+gap;
+    const over=labs.length?labs[labs.length-1].y-(box.h-g.padB+4):0; if(over>0) labs.forEach(o=>o.y-=over);
+    labs.forEach(({l,y})=>{ const key=(l.r===0.382||l.r===0.618); txt(ctx,(l.r*100).toFixed(l.r===0||l.r===1||l.r===0.5?0:1)+'%'+(g.small?'':'  '+fp(l.v)),xR+6,y,{font:(g.small?'11px ':'12px ')+css('--mono'),color:key?INK(.95):INK(.6)}); });
+    // eje de fechas
+    if(D.real){ let lastM=-1; D.dates.forEach((d,i)=>{ const m=d.getFullYear()*12+d.getMonth(); if(m!==lastM&&(d.getMonth()%6===0)){ lastM=m; const x=g.X(i); vline(ctx,x,g.padT,box.h-g.padB,INK(.06)); if(x>g.padL+22&&x<box.w-g.padR-10) txt(ctx,MES[d.getMonth()]+' '+String(d.getFullYear()).slice(2),x,box.h-15,{align:'center',base:'middle',font:'11px '+css('--mono'),color:INK(.5)}); } else if(m!==lastM) lastM=m; }); }
+    // precio
+    ctx.strokeStyle=INK(.82); ctx.lineWidth=1.5; ctx.lineJoin='round'; ctx.beginPath(); D.px.forEach((v,i)=>{ const x=g.X(i),y=g.Y(v); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke();
+    ctx.setLineDash([3,4]); ctx.strokeStyle=GOLD(.55); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(g.X(D.S),g.Y(D.px[D.S])); ctx.lineTo(g.X(D.E),g.Y(D.px[D.E])); ctx.stroke(); ctx.setLineDash([]);
+    const up=D.px[D.E]>D.px[D.S];
+    [[D.S,'inicio'],[D.E,'fin']].forEach(([i,t])=>{ const x=g.X(i), y=g.Y(D.px[i]); ctx.beginPath(); ctx.arc(x,y,12,0,7); ctx.fillStyle=GOLD(.18); ctx.fill(); dot(ctx,x,y,6,css('--gold'));
+      const above=(t==='fin')===up; txt(ctx,t+(D.real&&!g.small?' · '+fd(i):''),x,y+(above?-22:22),{align:'center',font:'12px '+css('--sans'),color:INK(.85)}); });
+    // dónde terminó la corrección
+    const win=D.real?140:35, after=argExt(D.E,Math.min(N()-1,D.E+win),(a,b)=>up?a<b:a>b);
+    if(after>D.E){ const depth=(D.px[D.E]-D.px[after])/(D.px[D.E]-D.px[D.S]), x=g.X(after), y=g.Y(D.px[after]);
+      ctx.beginPath(); ctx.arc(x,y,4.5,0,7); ctx.strokeStyle=INK(.95); ctx.lineWidth=1.6; ctx.stroke();
+      txt(ctx,'corrigió '+(depth*100).toFixed(1)+' %'+(D.real&&!g.small?' · '+fd(after):''),x,y+(up?20:-20),{align:'center',font:'12px '+css('--sans'),color:INK(.9)}); }
+  }
+  function nearAnchor(x,y){ const g=geom(); let best=null,bd=30; [['S',D.S],['E',D.E]].forEach(([k,i])=>{ const d=Math.hypot(g.X(i)-x,g.Y(D.px[i])-y); if(d<bd){bd=d;best=k;} }); return best; }
+  cv.addEventListener('pointerdown',e=>{ const r=cv.getBoundingClientRect(); drag=nearAnchor(e.clientX-r.left,e.clientY-r.top); if(drag){ cv.setPointerCapture(e.pointerId); cv.style.cursor='grabbing'; } });
+  cv.addEventListener('pointermove',e=>{
+    const r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top, g=geom(), i=clamp(g.I(x),0,N()-1), gapMin=D.real?15:4;
+    if(drag){ if(drag==='S'&&i<D.E-gapMin) D.S=i; if(drag==='E'&&i>D.S+gapMin) D.E=i; draw(); hideTip(tipEl); return; }
+    cv.style.cursor=nearAnchor(x,y)?'grab':'crosshair';
+    const L=levels(); let near=L[0]; L.forEach(l=>{ if(Math.abs(l.v-D.px[i])<Math.abs(near.v-D.px[i])) near=l; });
+    tip(tipEl,g.X(i),g.Y(D.px[i]),'<b>'+fp(D.px[i])+'</b>'+(D.real?fd(i):'día '+(i+1))+'<br>nivel más cercano: '+(near.r*100).toFixed(1)+' %',box);
+  });
+  const end=()=>{ drag=null; cv.style.cursor='crosshair'; };
+  cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('pointerleave',()=>hideTip(tipEl));
+  $('#extBtn').addEventListener('click',e=>{ ext=!ext; e.currentTarget.setAttribute('aria-pressed',String(ext)); draw(); });
+  const serBtns=$$('[data-series]');
+  serBtns.forEach(b=>b.addEventListener('click',()=>{ D=b.dataset.series==='dow'?DOW:SIM; pressGroup(serBtns,b);
+    $('#tradeTitle').textContent=D.real?'Dow Jones, 2023 – 2025':'Un precio simulado'; $('#tradeSrc').hidden=!D.real; draw(); }));
+
+  // prueba de honestidad
+  const ch=$('#cvHist'), tipH=$('#tipHist'); let hbox={w:0,h:0}, bins=[], total=0, seed=7;
+  const BW=0.05, BMAX=1.5;
+  function simulate(){
+    const r=mulberry(seed++), th=Math.log(1.05), depths=[];
+    let lp=0, dir=0, ex=0, hiE=0, loE=0; const piv=[];
+    for(let step=0; depths.length<6000 && step<2e6; step++){
+      lp+=gauss(r)*0.01;
+      if(dir===0){ hiE=Math.max(hiE,lp); loE=Math.min(loE,lp); if(hiE-lp>=th){ piv.push(hiE); dir=-1; ex=lp; } else if(lp-loE>=th){ piv.push(loE); dir=1; ex=lp; } }
+      else if(dir===1){ if(lp>ex) ex=lp; else if(ex-lp>=th){ piv.push(ex); dir=-1; ex=lp; } }
+      else { if(lp<ex) ex=lp; else if(lp-ex>=th){ piv.push(ex); dir=1; ex=lp; } }
+      if(piv.length>=3){ const a=Math.exp(piv[0]),b=Math.exp(piv[1]),c=Math.exp(piv[2]); depths.push(Math.abs(c-b)/Math.abs(b-a)); piv.shift(); }
+    }
+    bins=new Array(Math.round(BMAX/BW)).fill(0); total=depths.length; let tail=0;
+    depths.forEach(d=>{ const k=Math.floor(d/BW); if(k<bins.length) bins[k]++; else tail++; });
+    const win=c=>depths.filter(d=>Math.abs(d-c)<=0.025).length/total;
+    $('#simStats').innerHTML='';
+    [['61.8 %',win(0.618),true],['55 %',win(0.55),false],['70 %',win(0.70),false]].forEach(([k,v,hi])=>{ const d=document.createElement('div'); d.className='stat'+(hi?' hi':''); d.innerHTML='<div class="v">'+fmt(v*100,1)+' %</div><div class="k"></div>'; d.querySelector('.k').textContent='cerca de '+k; $('#simStats').appendChild(d); });
+    $('#simNote').textContent=fmt(total,0)+' correcciones simuladas; las tarjetas cuentan las que terminan a ±2.5 puntos de cada nivel, y '+fmt(tail/total*100,0)+' % fueron más allá de 150 % (fuera de la gráfica). El nivel áureo no atrapa más rebotes que sus vecinos: cada vez que simules, el orden entre las tres tarjetas cambia al azar.';
+    drawHist();
+  }
+  const hg=()=>{ const padL=40,padR=12,padT=hbox.w<520?38:26,padB=30, max=Math.max(...bins); return {padL,padR,padT,padB,max,X:v=>padL+(hbox.w-padL-padR)*v/BMAX,Y:c=>padT+(hbox.h-padT-padB)*(1-c/(max*1.08))}; };
+  function drawHist(){
+    const f=fit(ch,chartH(ch,0.5,220,330)); hbox={w:f.w,h:f.h}; const ctx=f.ctx, g=hg();
+    const maxP=g.max/total*100, stepP=maxP>8?4:maxP>4?2:1;
+    for(let p=0;p<=maxP*1.05;p+=stepP){ const y=g.Y(p/100*total); hline(ctx,g.padL,hbox.w-g.padR,y,INK(.08)); txt(ctx,p+'%',g.padL-6,y,{align:'right',mono:1,color:INK(.5)}); }
+    const bw=(hbox.w-g.padL-g.padR)/bins.length;
+    bins.forEach((c,k)=>{ const x=g.X(k*BW)+1, y=g.Y(c); rbar(ctx,x,y,Math.max(1,bw-2),g.Y(0)-y,4,GOLD(.42)); });
+    [0.236,0.382,0.5,0.618,0.786,1].forEach((r,i)=>{ const x=g.X(r), key=(r===0.618||r===0.382); vline(ctx,x,g.padT,g.Y(0),key?INK(.9):INK(.4),[4,4]);
+      txt(ctx,r===1?'100':r===0.5?'50':(r*100).toFixed(1),x,g.padT-4-(hbox.w<520&&i%2?12:0),{align:'center',base:'bottom',mono:1,color:key?INK(.95):INK(.55)}); });
+    [0,0.25,0.5,0.75,1,1.25,1.5].forEach(v=>txt(ctx,(v*100)+'%',v===1.5?hbox.w-g.padR:g.X(v),hbox.h-g.padB+8,{align:v===1.5?'right':'center',base:'top',mono:1,color:INK(.5)}));
+  }
+  ch.addEventListener('pointermove',e=>{ const r=ch.getBoundingClientRect(), x=e.clientX-r.left, g=hg(), k=Math.floor((x-g.padL)/((hbox.w-g.padL-g.padR)/bins.length));
+    if(k<0||k>=bins.length){hideTip(tipH);return;} tip(tipH,x,g.Y(bins[k]),'<b>'+fmt(bins[k]/total*100,1)+' %</b>de las correcciones<br>terminan entre '+(k*5)+' y '+(k*5+5)+' %',hbox); });
+  ch.addEventListener('pointerleave',()=>hideTip(tipH));
+  $('#simBtn').addEventListener('click',simulate);
+  draw(); simulate();
+  return {resize(){ draw(); drawHist(); }};
+};
+
+/* ================= 07 · φ ENTRE SUS PARES ================= */
+INIT.pares=function(){
+  const NUMS=[
+    {k:'phi',n:'φ',x:PHI,cf:[1,1,1,1,1,1,1,1,1,1,1,1,1]},
+    {k:'r2',n:'√2',x:Math.SQRT2,cf:[1,2,2,2,2,2,2,2,2,2,2,2,2]},
+    {k:'e',n:'e',x:Math.E,cf:[2,1,2,1,1,4,1,1,6,1,1,8,1]},
+    {k:'pi',n:'π',x:Math.PI,cf:[3,7,15,1,292,1,1,1,2,1,3,1,14]}
+  ];
+  const cc=$('#cvCF'), tipC=$('#tipCF'); let cbox={w:0,h:0}; const T=12;
+  const cg=()=>{ const padL=40,padR=8,rowH=(cbox.h-10)/NUMS.length, bw=(cbox.w-padL-padR)/T; return {padL,padR,rowH,bw}; };
+  const hgt=a=>Math.log2(a)+1;
+  function drawCF(){
+    const f=fit(cc,chartH(cc,0.5,230,300)); cbox={w:f.w,h:f.h}; const ctx=f.ctx, g=cg(), maxH=hgt(292);
+    NUMS.forEach((o,r)=>{ const base=5+(r+1)*g.rowH-14, top=5+r*g.rowH+16;
+      txt(ctx,o.n,g.padL-14,base-8,{align:'right',font:'600 18px '+css('--serif'),color:o.k==='phi'?css('--gold'):INK(.85)});
+      hline(ctx,g.padL,cbox.w-g.padR,base,INK(.12));
+      for(let i=1;i<=T;i++){ const a=o.cf[i], hh=(base-top)*hgt(a)/maxH, x=g.padL+(i-1)*g.bw+2, w=g.bw-4;
+        rbar(ctx,x,base-Math.max(2,hh),w,Math.max(2,hh),3,o.k==='phi'?GOLD(.9):GOLD(.5));
+        txt(ctx,String(a),x+w/2,base-Math.max(2,hh)-7,{align:'center',font:(a>9?'600 ':'')+'11px '+css('--mono'),color:INK(a>9?.95:.6)}); }
+    });
+  }
+  cc.addEventListener('pointermove',e=>{ const r=cc.getBoundingClientRect(), g=cg(), x=e.clientX-r.left, y=e.clientY-r.top, row=Math.floor((y-5)/g.rowH), i=Math.floor((x-g.padL)/g.bw)+1; if(row<0||row>=NUMS.length||i<1||i>T){hideTip(tipC);return;} const o=NUMS[row]; tip(tipC,x,y,'<b>a'+i+' = '+o.cf[i]+'</b>'+o.n+' = ['+o.cf[0]+'; '+o.cf.slice(1,6).join(', ')+', …]',cbox); });
+  cc.addEventListener('pointerleave',()=>hideTip(tipC));
+
+  // calidad de aproximación
+  function conv(o,K){ let p0=1,q0=0,p1=o.cf[0],q1=1; const out=[]; for(let k=1;k<=K;k++){ const a=o.cf[k], p=a*p1+p0, q=a*q1+q0; p0=p1;q0=q1;p1=p;q1=q; out.push({p,q,m:q*q*Math.abs(o.x-p/q)}); } return out; }
+  const ca=$('#cvApprox'), tipA=$('#tipApprox'); let abox={w:0,h:0}, cmp=NUMS[3]; const KA=8;
+  const qual=s=>1/s.m;                       // calidad = 1 / (q²·|x − p/q|)
+  const ag=()=>{ const padL=44,padR=40,padT=14,padB=28, L0=0, L1=3; return {padL,padR,padT,padB,X:k=>padL+(abox.w-padL-padR)*(k-1)/(KA-1),Y:v=>padT+(abox.h-padT-padB)*(1-(Math.log10(clamp(v,1,1000))-L0)/(L1-L0))}; };
+  function drawA(){
+    const f=fit(ca,chartH(ca,0.5,220,300)); abox={w:f.w,h:f.h}; const ctx=f.ctx, g=ag();
+    [1,10,100,1000].forEach(v=>{ hline(ctx,g.padL,abox.w-g.padR,g.Y(v),INK(.08)); txt(ctx,v.toLocaleString('es-MX'),g.padL-6,g.Y(v),{align:'right',mono:1,color:INK(.5)}); });
+    for(let k=1;k<=KA;k++) txt(ctx,String(k),g.X(k),abox.h-g.padB+8,{align:'center',base:'top',mono:1,color:INK(.5)});
+    const series=(o,color,dash)=>{ const c=conv(o,KA); ctx.setLineDash(dash); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath(); c.forEach((s,i)=>{ const x=g.X(i+1),y=g.Y(qual(s)); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); ctx.setLineDash([]); c.forEach((s,i)=>dot(ctx,g.X(i+1),g.Y(qual(s)),4,color)); return c; };
+    const cc2=series(cmp,css('--blue'),[6,5]); const cp=series(NUMS[0],css('--gold'),[]);
+    txt(ctx,'φ',g.X(KA)+8,g.Y(qual(cp[KA-1]))+12,{font:'600 13px '+css('--serif'),color:css('--gold')});
+    txt(ctx,cmp.n,g.X(KA)+8,g.Y(qual(cc2[KA-1]))-10,{font:'600 14px '+css('--serif'),color:css('--blue')});
+    if(cmp.k==='pi'){ const s3=cc2[2]; txt(ctx,'355/113',g.X(3)+8,g.Y(qual(s3))+2,{font:'12px '+css('--mono'),color:INK(.85)}); }
+  }
+  ca.addEventListener('pointermove',e=>{ const r=ca.getBoundingClientRect(), g=ag(), k=clamp(Math.round((e.clientX-r.left-g.padL)/((abox.w-g.padL-g.padR)/(KA-1)))+1,1,KA);
+    const a=conv(NUMS[0],KA)[k-1], b=conv(cmp,KA)[k-1]; tip(tipA,g.X(k),e.clientY-r.top,'<b>fracción '+k+'</b>φ ≈ '+a.p+'/'+a.q+' · calidad '+qual(a).toFixed(2)+'<br>'+cmp.n+' ≈ '+b.p.toLocaleString('es-MX')+'/'+b.q.toLocaleString('es-MX')+' · calidad '+qual(b).toFixed(qual(b)<10?2:0),abox); });
+  ca.addEventListener('pointerleave',()=>hideTip(tipA));
+  const cmpBtns=$$('[data-cmp]'); cmpBtns.forEach(b=>b.addEventListener('click',()=>{ cmp=NUMS.find(o=>o.k===b.dataset.cmp); pressGroup(cmpBtns,b); $('#cmpName').textContent=cmp.n; drawA(); }));
+
+  // razones metálicas
+  const NAMES={1:'áurea',2:'de plata',3:'de bronce'};
+  let mn=1; const seg=$('#metSeg'), cm=$('#cvMetal');
+  [1,2,3,4,5].forEach(n=>{ const b=document.createElement('button'); b.type='button'; b.textContent='n = '+n; b.setAttribute('aria-pressed',String(n===1)); b.addEventListener('click',()=>{ mn=n; pressGroup($$('#metSeg button'),b); drawM(); }); seg.appendChild(b); });
+  function drawM(){
+    const s=(mn+Math.sqrt(mn*mn+4))/2;
+    const narrow=cm.clientWidth<520, f=fit(cm,chartH(cm,0.38,narrow?190:160,240)), ctx=f.ctx, pad=12, sc=Math.min((f.w-2*pad)/s,(f.h-2*pad-(narrow?36:18))/1), W=s*sc, H=sc, x0=(f.w-W)/2, y0=pad;
+    for(let i=0;i<mn;i++){ ctx.fillStyle=i%2?INK(.05):INK(.08); ctx.fillRect(x0+i*H,y0,H,H); ctx.strokeStyle=INK(.4); ctx.lineWidth=1; ctx.strokeRect(x0+i*H+.5,y0+.5,H-1,H-1); txt(ctx,'1',x0+i*H+H/2,y0+H/2,{align:'center',font:'600 '+Math.min(26,H*0.25)+'px '+css('--serif'),color:INK(.5)}); }
+    const rw=W-mn*H; ctx.fillStyle=GOLD(.28); ctx.fillRect(x0+mn*H,y0,rw,H); ctx.strokeStyle=css('--gold'); ctx.lineWidth=1.6; ctx.strokeRect(x0+mn*H,y0,rw,H);
+    ctx.strokeStyle=GOLD(.7); ctx.lineWidth=1.4; ctx.strokeRect(x0,y0,W,H);
+    txt(ctx,'σ = '+s.toFixed(3)+' : 1',x0,y0+H+12,{font:'12px '+css('--mono'),color:INK(.7)});
+    txt(ctx,'lo que sobra: 1 : '+s.toFixed(3),narrow?x0:x0+W,y0+H+(narrow?30:12),{align:narrow?'left':'right',font:'12px '+css('--mono'),color:GOLD(.9)});
+    const seq=[0,1]; while(seq.length<9) seq.push(mn*seq[seq.length-1]+seq[seq.length-2]);
+    $('#metVal').textContent=s.toFixed(6); $('#metLbl').textContent='razón '+(NAMES[mn]||('metálica n = '+mn))+' · sucesión: '+seq.join(', ')+'…';
+  }
+  drawCF(); drawA(); drawM();
+  return {resize(){ drawCF(); drawA(); drawM(); }};
+};
+
+/* ================= 08 · TU TURNO ================= */
+INIT.turno=function(){
+  let pred=null;
+  const opts=$$('#tOpts .opt'), gen=$('#tGen');
+  opts.forEach(o=>o.addEventListener('click',()=>{ pred=+o.dataset.p; pressGroup(opts,o); gen.disabled=false; }));
+  $$('#tPresets button').forEach(b=>b.addEventListener('click',()=>{ $('#ta').value=b.dataset.a; $('#tb').value=b.dataset.b; $('#turnOut').hidden=true; }));
+  [$('#ta'),$('#tb')].forEach(i=>onInput(i,()=>{ $('#turnOut').hidden=true; }));
+  const cv=$('#cvTurn'), tipEl=$('#tipTurn'); let box={w:0,h:0}, seq=[], rs=[];
+  const NT=30;
+  function settle(a,b){ const s=[a,b]; for(let i=2;i<200;i++) s.push(s[i-1]+s[i-2]); for(let k=2;k<200;k++){ let ok=true; for(let j=k;j<Math.min(200,k+6);j++){ if(s[j-1]===0||Math.abs(s[j]/s[j-1]-PHI)>1e-4){ ok=false; break; } } if(ok) return k; } return null; }
+  const fmtv=v=>{ if(!isFinite(v)) return '∞'; const a=Math.abs(v); if(Number.isInteger(v)&&a<1e9) return v.toLocaleString('es-MX'); if(a>=1e9) return v.toExponential(2); return v.toFixed(a<10?3:1); };
+  function g(){ const padL=34,padR=14,padT=14,padB=26; return {padL,padR,padT,padB,X:k=>padL+(box.w-padL-padR)*(k-2)/(NT-2),Y:v=>padT+(box.h-padT-padB)*(1-(clamp(v,-1.5,3.5)+1.5)/5)}; }
+  function draw(){
+    const f=fit(cv,chartH(cv,0.45,200,280)); box={w:f.w,h:f.h}; const ctx=f.ctx, G=g();
+    [-1,0,1,2,3].forEach(v=>{ hline(ctx,G.padL,box.w-G.padR,G.Y(v),INK(v===0?.18:.07)); txt(ctx,String(v),G.padL-6,G.Y(v),{align:'right',mono:1,color:INK(.5)}); });
+    hline(ctx,G.padL,box.w-G.padR,G.Y(PHI),INK(.55),[5,5]); txt(ctx,'φ',box.w-G.padR,G.Y(PHI)-10,{align:'right',font:'14px '+css('--serif'),color:INK(.85)});
+    hline(ctx,G.padL,box.w-G.padR,G.Y(PSI),css('--blue'),[2,4]); txt(ctx,'ψ = −0.618',box.w-G.padR,G.Y(PSI)+11,{align:'right',font:'11px '+css('--mono'),color:css('--blue')});
+    ctx.strokeStyle=css('--gold'); ctx.lineWidth=2; ctx.beginPath(); let st=false;
+    for(let k=2;k<=NT;k++){ const v=rs[k]; if(v==null||!isFinite(v)){ st=false; continue; } const x=G.X(k),y=G.Y(v); if(!st){ctx.moveTo(x,y);st=true;} else ctx.lineTo(x,y); }
+    ctx.stroke();
+    for(let k=2;k<=NT;k++){ const v=rs[k]; if(v==null||!isFinite(v)) continue; dot(ctx,G.X(k),G.Y(v),Math.abs(v)>3.5||v<-1.5?2.5:3.5,css('--gold')); }
+    [2,10,20,30].forEach(k=>txt(ctx,String(k),G.X(k),box.h-G.padB+7,{align:'center',base:'top',mono:1,color:INK(.5)}));
+  }
+  cv.addEventListener('pointermove',e=>{ if(!rs.length) return; const r=cv.getBoundingClientRect(), G=g(), k=clamp(Math.round((e.clientX-r.left-G.padL)/((box.w-G.padL-G.padR)/(NT-2)))+2,2,NT); const v=rs[k]; tip(tipEl,G.X(k),G.Y(v==null?0:v),'<b>'+(v==null?'—':v.toFixed(6))+'</b>término '+(k+1)+' ÷ término '+k,box); });
+  cv.addEventListener('pointerleave',()=>hideTip(tipEl));
+  gen.addEventListener('click',()=>{
+    if(pred==null) return;
+    let a=parseFloat($('#ta').value), b=parseFloat($('#tb').value); if(isNaN(a)) a=0; if(isNaN(b)) b=0;
+    seq=[a,b]; for(let i=2;i<=NT+1;i++) seq.push(seq[i-1]+seq[i-2]);
+    rs=[]; for(let k=1;k<=NT;k++) rs[k+1]=seq[k-1]!==0?seq[k]/seq[k-1]:null;
+    const box2=$('#tChips'); box2.innerHTML='';
+    seq.slice(0,12).forEach((v,i)=>{ const c=document.createElement('div'); c.className='chip'+(i<2?' sum':''); c.innerHTML='<small>'+(i+1)+'</small><b></b>'; c.querySelector('b').textContent=fmtv(v); box2.appendChild(c); });
+    $('#turnOut').hidden=false; draw();
+    const v=$('#tVerdict'), deg=(a===0&&b===0), k=deg?null:settle(a,b), k11=settle(1,1), nearPsi=a!==0&&Math.abs(b/a-PSI)<0.02;
+    let T,M;
+    if(deg){ T='Caso especial'; M='Con 0 y 0 todo se queda en cero: es el único punto fijo de la regla. Prueba cualquier otro par.'; }
+    else {
+      const when=k?('Con tus semillas el cociente quedó pegado a φ (diferencia menor a 0.0001) desde el término '+(k+1)+'; con 1 y 1 eso pasa desde el término '+(k11+1)+'.'):'';
+      const psiTxt=nearPsi?' Tus semillas están casi alineadas con ψ = −0.618, por eso el cociente se quedó un buen rato cerca de ψ antes de rendirse a φ.':'';
+      if(pred===1){ T='¡Acertaste! ✦'; M='Converge a φ ≈ 1.618 casi sin importar las semillas. Fibonacci no es especial por dónde empieza, sino por su regla. '+when+psiTxt; }
+      else if(pred===2){ T='A medias'; M='El destino no depende de las semillas: siempre es φ. Lo que sí depende es cuánto tarda en llegar. '+when+psiTxt; }
+      else { T='Sorpresa…'; M='Pase lo que pase con las semillas (salvo 0 y 0), el cociente termina en φ ≈ 1.618. '+when+psiTxt; }
+    }
+    v.querySelector('b').textContent=T; v.querySelector('p').textContent=M;
+    $('#turnOut').scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'nearest'});
+  });
+  return {resize(){ if(rs.length&&!$('#turnOut').hidden) draw(); }};
+};
+
+/* ================= 09 · GABINETE ================= */
+INIT.gabinete=function(){
+  const num=(id,a,b)=>clamp(parseInt($(id).value,10)||a,a,b);
+  const gcd=(a,b)=>{ while(b){ [a,b]=[b,a%b]; } return a; };
+  const nf=v=>v.toLocaleString('es-MX');
+  function binet(){ const n=num('#gBinet',1,70), v=Math.pow(PHI,n)/SQ5, c=Math.pow(PSI,n)/SQ5;
+    $('#oBinet').innerHTML='φ'+sup(n)+'/√5 = '+v.toLocaleString('es-MX',{maximumFractionDigits:6})+'<br>F'+n+' = '+nf(FIB[n])+'<small>la diferencia es ψ'+sup(n)+'/√5 = '+c.toExponential(3)+', siempre menor que ½</small>'; }
+  function cass(){ const n=num('#gCass',2,70), r=BigInt(FIB[n-1])*BigInt(FIB[n+1])-BigInt(FIB[n])*BigInt(FIB[n]);
+    $('#oCass').innerHTML=nf(FIB[n-1])+' × '+nf(FIB[n+1])+' − '+nf(FIB[n])+'² = '+(r>0n?'+':'')+r+'<small>(−1)'+sup(n)+' = '+(n%2?'−1':'+1')+'</small>'; }
+  function sum(){ const n=num('#gSum',1,35); let s=0; for(let k=1;k<=n;k++) s+=FIB[k]*FIB[k];
+    $('#oSum').innerHTML=(n<=6?Array.from({length:n},(_,i)=>FIB[i+1]+'²').join(' + '):'1² + 1² + 2² + … + '+nf(FIB[n])+'²')+' = '+nf(s)+'<br>F'+n+' × F'+(n+1)+' = '+nf(FIB[n])+' × '+nf(FIB[n+1])+' = '+nf(FIB[n]*FIB[n+1]); }
+  function gc(){ const m=num('#gM',1,70), n=num('#gN',1,70), g=gcd(m,n), v=Number(((a,b)=>{ while(b){ [a,b]=[b,a%b]; } return a; })(BigInt(FIB[m]),BigInt(FIB[n])));
+    $('#oGcd').innerHTML='mcd('+nf(FIB[m])+', '+nf(FIB[n])+') = '+nf(v)+'<br>F<sub>mcd('+m+', '+n+')</sub> = F'+g+' = '+nf(FIB[g]); }
+  function lame(){ const k=num('#gLame',3,40); let a=FIB[k+1], b=FIB[k], steps=0; const show=[]; while(b){ const q=Math.floor(a/b), r=a%b; if(show.length<6) show.push(nf(a)+' = '+q+'·'+nf(b)+' + '+nf(r)); [a,b]=[b,r]; steps++; }
+    let tot=0; const rnd=mulberry(k*7919); const M=200; for(let t=0;t<M;t++){ let x=Math.floor(FIB[k+1]*(0.5+rnd()*0.5))+1, y=Math.floor(x*(0.3+rnd()*0.65))+1, s=0; while(y){ [x,y]=[y,x%y]; s++; } tot+=s; }
+    $('#oLame').innerHTML=show.join('<br>')+(steps>6?'<br>…':'')+'<br>'+steps+' divisiones para ('+nf(FIB[k+1])+', '+nf(FIB[k])+')<small>200 pares al azar de tamaño parecido necesitaron '+(tot/M).toFixed(1)+' en promedio</small>'; }
+  function zeck(){ let n=num('#gZeck',1,1e9); const F=[1,2]; while(F[F.length-1]<=n) F.push(F[F.length-1]+F[F.length-2]); F.pop();
+    const used=new Set(); let r=n; for(let i=F.length-1;i>=0;i--) if(F[i]<=r){ used.add(F[i]); r-=F[i]; }
+    $('#oZeck').innerHTML=nf(n)+' = '+[...used].map(nf).join(' + ');
+    const zb=$('#zBits'); zb.innerHTML=''; F.slice().reverse().forEach(v=>{ const s=document.createElement('span'); s.className=used.has(v)?'on':''; s.textContent=nf(v); zb.appendChild(s); }); }
+  const cp=$('#cvPis');
+  function pis(){ const m=+$('#gPis').value; $('#gPisOut').textContent=m;
+    let x=0,y=1,p=0; const cyc=[]; do{ cyc.push(x); const nx=(x+y)%m; x=y; y=nx; p++; }while(!(x===0&&y===1)&&p<2000);
+    const f=fit(cp,Math.min(300,Math.round(cp.clientWidth*0.8))), ctx=f.ctx, cx=f.w/2, cy=f.h/2, R=Math.min(f.w,f.h)/2-22;
+    const pt=v=>{ const a=-Math.PI/2+2*Math.PI*v/m; return [cx+R*Math.cos(a),cy+R*Math.sin(a)]; };
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.strokeStyle=INK(.12); ctx.lineWidth=1; ctx.stroke();
+    ctx.strokeStyle=GOLD(.55); ctx.lineWidth=1.2; ctx.beginPath(); cyc.forEach((v,i)=>{ const [a,b]=pt(v); i?ctx.lineTo(a,b):ctx.moveTo(a,b); }); ctx.closePath(); ctx.stroke();
+    for(let v=0;v<m;v++){ const [a,b]=pt(v), [la,lb]=[cx+(R+13)*Math.cos(-Math.PI/2+2*Math.PI*v/m),cy+(R+13)*Math.sin(-Math.PI/2+2*Math.PI*v/m)]; dot(ctx,a,b,3,INK(.85),false); txt(ctx,String(v),la,lb,{align:'center',font:'11px '+css('--mono'),color:INK(.6)}); }
+    $('#oPis').innerHTML='periodo = '+p+'<small>'+(m===10?'los últimos dígitos se repiten cada 60 términos: ':'restos: ')+cyc.slice(0,Math.min(p,24)).join(' ')+(p>24?' …':'')+'</small>'; }
+  function miles(){ const mi=num('#gMi',1,100000); const F=[1,2]; while(F[F.length-1]<=mi) F.push(F[F.length-1]+F[F.length-2]);
+    let r=mi, km=0; const parts=[]; for(let i=F.length-2;i>=0;i--) if(F[i]<=r){ r-=F[i]; km+=F[i+1]; parts.push(nf(F[i])+'→'+nf(F[i+1])); }
+    $('#oMi').innerHTML=nf(mi)+' mi ≈ '+nf(km)+' km<small>'+parts.join(' · ')+' · exacto: '+(mi*1.609344).toLocaleString('es-MX',{maximumFractionDigits:1})+' km</small>'; }
+  (function d89(){ const lines=[]; for(let n=1;n<=9;n++){ lines.push('0.'+'0'.repeat(n+1-String(FIB[n]).length)+FIB[n]); }
+    let s='', rem=1; for(let i=0;i<24;i++){ rem*=10; s+=Math.floor(rem/89); rem%=89; }
+    const w=Math.max(...lines.map(l=>l.length));
+    $('#o89').textContent=lines.map(l=>' '+l.padEnd(w,' ')).join('\n')+'\n+ …\n'+'─'.repeat(w+1)+'\n 0.'+s+'…  = 1/89'; })();
+  [['#gBinet',binet],['#gCass',cass],['#gSum',sum],['#gM',gc],['#gN',gc],['#gLame',lame],['#gZeck',zeck],['#gMi',miles],['#gPis',pis]].forEach(([id,fn])=>onInput($(id),fn));
+  binet(); cass(); sum(); gc(); lame(); zeck(); pis(); miles();
+  return {resize:pis};
+};
+
+route();
+})();
+
+</script>
+</body>
+</html>
